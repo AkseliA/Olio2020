@@ -8,10 +8,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
     WebView web;
     Button goBtn;
+    ImageButton refreshBtn;
+    ImageButton backBtn;
+    ImageButton forwardBtn;
     EditText urlTxt;
 
 
@@ -23,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         web = findViewById(R.id.webView);
         goBtn = findViewById(R.id.goBtn);
         urlTxt = findViewById(R.id.urlTxt);
+        refreshBtn = findViewById(R.id.refrest_btn);
+        backBtn = findViewById(R.id.back_btn);
+        forwardBtn = findViewById(R.id.forward_btn);
+
 
 
         web.getSettings().setJavaScriptEnabled(true);
@@ -33,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String url = urlTxt.getText().toString();
                 loadUrl(url);
+            }
+        });
+
+        //Reload page when pressed
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                web.reload();
             }
         });
 
