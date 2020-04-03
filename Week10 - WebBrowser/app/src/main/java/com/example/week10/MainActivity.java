@@ -9,10 +9,12 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     WebView web;
     Button goBtn;
+    Button js_Btn;
     ImageButton refreshBtn;
     ImageButton backBtn;
     ImageButton forwardBtn;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         web = findViewById(R.id.webView);
         goBtn = findViewById(R.id.goBtn);
+        js_Btn = findViewById(R.id.executeJs_btn);
+
         urlTxt = findViewById(R.id.urlTxt);
         refreshBtn = findViewById(R.id.refrest_btn);
         backBtn = findViewById(R.id.back_btn);
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String url = urlTxt.getText().toString();
                 loadUrl(url);
+                //Javascript button is "execute" when not pressed.
+                js_Btn.setText(R.string.Js_btn_execute);
             }
         });
 
@@ -48,14 +54,54 @@ public class MainActivity extends AppCompatActivity {
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                web.reload();
+                String currUrl = web.getUrl();
+                web.loadUrl(currUrl);
+
+                //Alternative way
+                //web.reload();
+                js_Btn.setText(R.string.Js_btn_execute);
             }
         });
 
-
+        //Button used to execute javascripts
+        js_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                executeJavaScript();
+            }
+        });
     }
+
+
     public void loadUrl(String url){
-        String myUrl = "http://" + url;
+        String myUrl;
+
+        if(url.equals("index.html")){
+            myUrl = "file:///android_asset/index.html";
+        }else{
+            myUrl = "http://" + url;
+        }
+
         web.loadUrl(myUrl);
+        urlTxt.setText(myUrl);
+    }
+
+    public void executeJavaScript(){
+        //If url is empty.
+        if(web.getUrl() == null){
+            Toast.makeText(getApplicationContext(), "This feature is not available on this site.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(web.getUrl().equals("file:///android_asset/index.html") && js_Btn.getText().equals("Execute")){
+            //Run js function "shoutOut"
+            web.evaluateJavascript("javascript:shoutOut()", null);
+            js_Btn.setText(R.string.js_btn_restore);
+        }else if(web.getUrl().equals("file:///android_asset/index.html") && js_Btn.getText().equals("Restore")){
+            //Run js function initialize
+            web.evaluateJavascript("javascript:initialize()", null);
+            js_Btn.setText(R.string.Js_btn_execute);
+        }else{
+            Toast.makeText(getApplicationContext(), "This feature can only be used at index.html", Toast.LENGTH_SHORT).show();
+        }
     }
 }
