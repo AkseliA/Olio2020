@@ -1,5 +1,9 @@
-package com.example.week10;
+/* Author: Akseli Aula
+ * Environment: Android Studio
+ * Assignment week 10*/
 
+
+package com.example.week10;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;

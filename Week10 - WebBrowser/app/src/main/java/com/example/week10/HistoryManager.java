@@ -1,5 +1,8 @@
-package com.example.week10;
+/* Author: Akseli Aula
+ * Environment: Android Studio
+ * Assignment week 10*/
 
+package com.example.week10;
 import java.util.ArrayList;
 
 import java.util.ListIterator;
@@ -38,9 +41,6 @@ public class HistoryManager {
         historyArray.add(url);
         //position grows as list gets bigger.
         position++;
-
-        System.out.println("##########################################################");
-        System.out.println(position + "      " + historyArray.size());
 
     }
 
