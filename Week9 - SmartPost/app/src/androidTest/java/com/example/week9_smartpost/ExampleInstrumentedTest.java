@@ -1,4 +1,4 @@
-package com.example.week9;
+package com.example.week9_smartpost;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.week9", appContext.getPackageName());
+        assertEquals("com.example.week9_smartpost", appContext.getPackageName());
     }
 }

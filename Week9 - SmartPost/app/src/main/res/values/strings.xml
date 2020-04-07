@@ -1,4 +1,41 @@
 <resources>
-    <string name="app_name">Week9</string>
-    <string name="search">Search</string>
+    <string name="app_name">Week9_SmartPost</string>
+    <string name="location">Location</string>
+    <string name="automate">Automate</string>
+    <string name="availability">Availability</string>
+    <string name="country">Country</string>
+    <string name="filter">filter</string>
+    <string name="search">search</string>
+    <string name="pickuptime_ee_only">Pickuptime (EE-only)</string>
+    <string name="viiva">-</string>
+    <string-array name="country_array">
+        <item>All</item>
+        <item>Estonia</item>
+        <item>Finland</item>
+    </string-array>
+    <string-array name="availability_array">
+        <item>All</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+    <string-array name="pickup_times">
+        <item>All</item>
+        <item>9.00</item>
+        <item>9.15</item>
+        <item>9.30</item>
+        <item>9.45</item>
+        <item>10.00</item>
+        <item>10.15</item>
+        <item>10.30</item>
+        <item>10.45</item>
+        <item>11.00</item>
+    </string-array>
+
+
 </resources>

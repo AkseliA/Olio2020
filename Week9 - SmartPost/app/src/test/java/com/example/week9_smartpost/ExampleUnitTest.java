@@ -1,4 +1,4 @@
-package com.example.week9;
+package com.example.week9_smartpost;
 
 import org.junit.Test;
 
