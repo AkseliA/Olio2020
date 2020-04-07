@@ -40,13 +40,9 @@ public class MainActivity extends AppCompatActivity {
         hm = new HistoryManager();
 
 
-
-
-
-
-
         web.getSettings().setJavaScriptEnabled(true);
         web.setWebViewClient(new WebViewClient());
+
 
         goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
         //Reload page when pressed
@@ -121,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 

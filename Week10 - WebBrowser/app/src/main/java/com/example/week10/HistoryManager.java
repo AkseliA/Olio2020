@@ -7,7 +7,7 @@ import java.util.ListIterator;
 public class HistoryManager {
     private ArrayList<String> historyArray;
     private ListIterator<String> iter;
-    private int position;
+    public int position;
 
     public HistoryManager(){
         historyArray = new ArrayList<String>();
@@ -15,15 +15,32 @@ public class HistoryManager {
 
     }
 
-    public void addCurrentPage(String url){
-        if(historyArray.size() == 10){
+    public void addCurrentPage(String url) {
+        if (historyArray.size() == 10) {
             removeOldest();
 
         }
-        System.out.println("Added " + url);
+        if (position >= 10) {
+            position--;
+        }
+
+        //If entered a website after going back in history, deleting following pages
+        if (position != historyArray.size()){
+            int size = historyArray.size();
+            System.out.println(size + " " + position);
+            for (int j = size; j >= position ;j--){
+                System.out.println(j);
+                historyArray.remove(j-1);
+            }
+            position = historyArray.size();
+        }
+
         historyArray.add(url);
         //position grows as list gets bigger.
-        position = historyArray.size();
+        position++;
+
+        System.out.println("##########################################################");
+        System.out.println(position + "      " + historyArray.size());
 
     }
 
@@ -33,17 +50,18 @@ public class HistoryManager {
 
     public String getNextUrl(){
         String nUrl = "";
-
         //Move to last visited page
         if(position < historyArray.size()) {
-            position++;
             iter = historyArray.listIterator(position);
+
 
             if (iter.hasNext()) {
                 nUrl = iter.next();
+                position++;
             }
         }
-
+        //System.out.println("##########################################################");
+        //System.out.println("position: " + position);
 
         return nUrl;
     }
@@ -51,7 +69,7 @@ public class HistoryManager {
     public String getPreviousUrl(){
         String pUrl = "";
 
-        if(position > 0){
+        if(position > 1){
             position--;
             iter = historyArray.listIterator(position);
 
@@ -59,6 +77,8 @@ public class HistoryManager {
                 pUrl = iter.previous();
             }
         }
+        //System.out.println("##########################################################");
+        //System.out.println("position: " + position);
         return pUrl;
     }
 }
