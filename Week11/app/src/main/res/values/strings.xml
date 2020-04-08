@@ -2,4 +2,28 @@
     <string name="app_name">Week11</string>
     <string name="Close">Close</string>
     <string name="Open">Open</string>
+    <string name="random_string">Lorem ipsum dolor sit amet, consectetuer adipiscin</string>
+    <string name="settings">Settings</string>
+
+    <string-array name="color_array">
+        <item>Current</item>
+        <item>Black</item>
+        <item>Brown</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Red</item>
+        <item>Blue</item>
+    </string-array>
+
+    <string-array name="fontsize_array">
+        <item>Current</item>
+        <item>12</item>
+        <item>18</item>
+        <item>24</item>
+        <item>30</item>
+        <item>36</item>
+        <item>42</item>
+        <item>48</item>
+        <item>54</item>
+    </string-array>
 </resources>
