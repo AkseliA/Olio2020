@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Viikko11</string>
+    <string name="Close" translatable="false">Sulje</string>
+    <string name="Open" translatable="false">Avaa</string>
+    <string name="settings" translatable="false">Asetukset</string>
+    <string name="your_text" translatable="false">Sinun tekstisi</string>
+    <string name="hello" translatable="false">"Terve "</string>
+    <string name="set_width" translatable="false">Aseta leveys</string>
+    <string name="set_height" translatable="false">Aseta korkeus</string>
+    <string name="pick_a_color" translatable="false">Valitse väri</string>
+    <string name="set_font_size" translatable="false">Valitse fonttikoko</string>
+    <string name="lock_your_text" translatable="false">Lukitse tekstisi</string>
+    <string name="your_name" translatable="false">"Nimesi: "</string>
+    <string name="select_language" translatable="false">Valitse kieli</string>
+</resources>
