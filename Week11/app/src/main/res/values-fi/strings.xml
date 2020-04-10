@@ -13,4 +13,5 @@
     <string name="lock_your_text" translatable="false">Lukitse tekstisi</string>
     <string name="your_name" translatable="false">"Nimesi: "</string>
     <string name="select_language" translatable="false">Valitse kieli</string>
+    <string name="menu">Valikko</string>
 </resources>

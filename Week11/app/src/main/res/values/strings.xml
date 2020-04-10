@@ -1,18 +1,19 @@
 <resources>
-    <string name="app_name" translatable="false">Week11</string>
-    <string name="Close" translatable="false">Close</string>
-    <string name="Open" translatable="false">Open</string>
+    <string name="app_name">Week11</string>
+    <string name="Close">Close</string>
+    <string name="Open">Open</string>
     <string name="random_string" translatable="false">Lorem ipsum dolor sit amet, consectetuer adipiscin</string>
-    <string name="settings" translatable="false">Settings</string>
-    <string name="your_text" translatable="false">Your text</string>
-    <string name="hello" translatable="false">Hello </string>
-    <string name="set_width" translatable="false">Set width</string>
-    <string name="set_height" translatable="false">Set height</string>
-    <string name="pick_a_color" translatable="false">Pick a color</string>
-    <string name="set_font_size" translatable="false">Set font size</string>
-    <string name="lock_your_text" translatable="false">Lock your text</string>
-    <string name="your_name" translatable="false">Your name:</string>
-    <string name="select_language" translatable="false">Select language</string>
+    <string name="your_text">Your text</string>
+    <string name="hello">Hello </string>
+    <string name="set_width">Set width</string>
+    <string name="set_height">Set height</string>
+    <string name="pick_a_color">Pick a color</string>
+    <string name="set_font_size">Set font size</string>
+    <string name="lock_your_text">Lock your text</string>
+    <string name="your_name">Your name:</string>
+    <string name="select_language">Select language</string>
+    <string name="menu">Menu</string>
+    <string name="settings">Settings</string>
 
     <string-array name="color_array">
         <item>Current</item>

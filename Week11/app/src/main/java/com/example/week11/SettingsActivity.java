@@ -1,3 +1,7 @@
+/* Author: Akseli Aula
+ * Environment: Android Studio
+ * Assignment week 11*/
+
 package com.example.week11;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +18,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -31,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
     int maxHeight = 300, minHeight = 100;
     int step = 10;
     boolean switchState;
+    Toast popupMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,11 @@ public class SettingsActivity extends AppCompatActivity {
         widthSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
                 width = minWidth + (progress*step);
+                String w = "Width: ";
+                broadcastMsg(w, width);
+
             }
 
             @Override
@@ -96,6 +106,9 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 height = minHeight + (progress*step);
+                String h = "Height: ";
+                broadcastMsg(h, height);
+
             }
 
             @Override
@@ -152,8 +165,18 @@ public class SettingsActivity extends AppCompatActivity {
         Configuration config = resources.getConfiguration();
         config.locale = locale;
         resources.updateConfiguration(config, dm);
-        Intent refresh = new Intent(this, SettingsActivity.class);
+        Intent refresh = new Intent(this, MainActivity.class);
         startActivity(refresh);
     }
+
+    public void broadcastMsg(String s, int i){
+        if(popupMsg != null){
+            popupMsg.cancel();
+        }
+        popupMsg = Toast.makeText(getApplicationContext(),s + i, Toast.LENGTH_SHORT);
+        popupMsg.show();
+    }
+
+
 
 }

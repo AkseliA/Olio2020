@@ -13,4 +13,5 @@
     <string name="lock_your_text" translatable="false">Lock your text</string>
     <string name="your_name" translatable="false">Your name:</string>
     <string name="select_language" translatable="false">Select language</string>
+    <string name="menu">Menu</string>
 </resources>
