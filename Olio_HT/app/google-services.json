@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "752215790928",
+    "firebase_url": "https://olio-ht.firebaseio.com",
+    "project_id": "olio-ht",
+    "storage_bucket": "olio-ht.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752215790928:android:900a359f82d67c2bc6c855",
+        "android_client_info": {
+          "package_name": "com.example.olio_ht"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752215790928-2h3q0kbgc2dc6udh9hqccavpcpfjhl83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-XaMn9X1FjlO_HTM97XNeo22JBfTUwXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752215790928-2h3q0kbgc2dc6udh9hqccavpcpfjhl83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
