@@ -15,12 +15,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     Button signIn, signUp;
     EditText email_txt, password_txt;
     FirebaseAuth fbAuth;
     private FirebaseAuth.AuthStateListener fbAuthStateListener;
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         email_txt = findViewById(R.id.email_txt);
         password_txt = findViewById(R.id.password_txt);
         fbAuth = FirebaseAuth.getInstance();
+
+
 
         fbAuthStateListener = new FirebaseAuth.AuthStateListener(){
             @Override
@@ -52,34 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = email_txt.getText().toString();
-
-                String password = password_txt.getText().toString();
-
-                if(email.isEmpty()){
-                    email_txt.setError("Enter email address");
-                    email_txt.requestFocus();
-
-                }else if(password.isEmpty()) {
-                    password_txt.setError("Enter password");
-                    password_txt.requestFocus();
-
-                }if(email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Fill in your email and password", Toast.LENGTH_SHORT).show();
-
-                }else {
-                    fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
-                                Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                    });
-                }
+                logIn();
             }
         });
     }
@@ -89,4 +71,59 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         fbAuth.addAuthStateListener(fbAuthStateListener);
     }
+    public void logIn(){
+        String email = email_txt.getText().toString();
+        String password = password_txt.getText().toString();
+
+        PasswordHasher pwHash = new PasswordHasher();
+
+        if(email.isEmpty()){
+            email_txt.setError("Enter email address");
+            email_txt.requestFocus();
+
+        }else if(password.isEmpty()) {
+            password_txt.setError("Enter password");
+            password_txt.requestFocus();
+
+        }if(email.isEmpty() && password.isEmpty()){
+            Toast.makeText(LoginActivity.this, "Fill in your email and password", Toast.LENGTH_SHORT).show();
+
+        }else {
+            //For logging in we must generate hashedpassword from the input
+            String salt = pwHash.getSalt();
+            String hashedPw = pwHash.getHashedPassword(password, salt);
+            System.out.println(hashedPw + "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+
+            fbAuth.signInWithEmailAndPassword(email, hashedPw).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+//    public String getSaltFromDb(final String email){
+//        String salt = "";
+//        reference = FirebaseDatabase.getInstance().getReference().child("Users");
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+//
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        return salt;
+//    }
 }
