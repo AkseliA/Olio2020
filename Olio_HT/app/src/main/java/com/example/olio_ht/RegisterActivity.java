@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
     EditText email_in, name_in, password1_in, password2_in;
     Button singUpBtn;
@@ -25,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //initi...
+        //initializing
         email_in = findViewById(R.id.email_txt);
         name_in = findViewById(R.id.username_txt);
         password1_in = findViewById(R.id.password1_txt);
@@ -54,22 +57,71 @@ public class RegisterActivity extends AppCompatActivity {
                 }else if(!password1.equals(password2)){
                     Toast.makeText(RegisterActivity.this, "Passwords didn't match!", Toast.LENGTH_SHORT).show();
 
-                }else{
-                    fbAuth.createUserWithEmailAndPassword(email, password1).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
-                                Toast.makeText(RegisterActivity.this, "There was an error creating an account.", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(RegisterActivity.this, "Account created.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
+                }else {
+                    boolean check;
+                    check = checkPassword(password1);
+                    //if password doesn't contain atleast 1x number + 1x special character + small and big letter + 12 marks long
+                    if (!check) {
+                        Toast.makeText(RegisterActivity.this, "Password must be atleast 12 marks long and contain at minimum 1 number, 1 special character, small and big letters.", Toast.LENGTH_LONG).show();
+                    } else{
+                        fbAuth.createUserWithEmailAndPassword(email, password1).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(RegisterActivity.this, "There was an error creating an account.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "Account created.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });
 
+    }
+    public boolean checkPassword(String pw){
+        boolean valid = false;
+        boolean containsSpecial = false;
+        boolean containsCapital = false;
+        boolean containsLower = false;
+        boolean containsNumber = false;
+        boolean validLength = false;
+
+        //Check length
+        if(pw.length() >= 12){
+            validLength = true;
+        }
+        //creating a char array for further checking
+        char[] pwArray = pw.toCharArray();
+
+        for (char c : pwArray) {
+            //Check for number
+            if(Character.isDigit(c)){
+                containsNumber = true;
+
+            //Check for uppercase
+            }else if(Character.isUpperCase(c)){
+                containsCapital = true;
+
+            //Check for lowercase
+            }else if(Character.isLowerCase(c)){
+                containsLower = true;
+            }
+        }
+        //Check for special character using pattern containing all non special characters.
+        Pattern characters = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher match = characters.matcher(pw);
+        if(match.find()){
+            containsSpecial = true;
+        }
+
+        //Check if all are true
+        if(containsSpecial && containsCapital && containsLower && containsNumber && validLength){
+            valid = true;
+        }
+        return valid;
     }
 }
