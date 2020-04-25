@@ -66,6 +66,9 @@ public class HomeActivity extends AppCompatActivity {
                 if(id == R.id.logout){
                     signOut();
                 }
+                if(id == R.id.settings){
+                    startActivity(new Intent(HomeActivity.this, UserSettingsActivity.class));
+                }
 
                 return true;
             }
@@ -78,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                welcomeTxt.setText(String.format("%s %s %s", getResources().getString(R.string.Welcome), user.getFirst_name(), user.getLast_name()));
+                welcomeTxt.setText(String.format("%s %s!", getResources().getString(R.string.Welcome), user.getFirst_name()));
                 navHeaderName.setText(user.getFirst_name() + " " + user.getLast_name());
                 navHeaderEmail.setText(user.getEmail());
             }

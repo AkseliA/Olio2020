@@ -17,4 +17,6 @@
     <string name="Welcome">Welcome</string>
     <string name="Settings">Settings</string>
     <string name="Logout">Logout</string>
+    <string name="user_information">User information</string>
+    <string name="edit">Edit</string>
 </resources>
