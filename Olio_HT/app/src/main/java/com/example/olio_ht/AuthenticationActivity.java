@@ -31,6 +31,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         //Sets random number when the activity is opened
         setRandomNumber();
 
+
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +41,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 if (!check){
                     setRandomNumber();
                     Toast.makeText(AuthenticationActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
+                    authNmbrInput.setText("");
                 }else{
                     Intent intent = new Intent(AuthenticationActivity.this, HomeActivity.class);
                     startActivity(intent);
@@ -47,11 +49,6 @@ public class AuthenticationActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
     }
 
     public void setRandomNumber(){

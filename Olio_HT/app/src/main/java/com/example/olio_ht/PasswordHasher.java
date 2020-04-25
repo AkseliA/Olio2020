@@ -1,19 +1,15 @@
 package com.example.olio_ht;
 
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 //Class to set and get SHA-512+salt hashed passwords
 public class PasswordHasher {
+    String salt;
     public PasswordHasher(){
+        salt = "Oq+hcZo9dccnSm/hUyIaiQ6!";
     }
 
     //https://stackoverflow.com/questions/33085493/how-to-hash-a-password-with-sha-512-in-java
@@ -41,14 +37,6 @@ public class PasswordHasher {
         random.nextBytes(salt);
         //encode bytes to string
         String encodedSalt = Base64.getEncoder().encodeToString(salt);*/
-        String salt = "Oq+hcZo9dccnSm/hUyIaiQ6!";
         return salt;
     }
-
-    //function to check if entered password matches the one in Firebase
-    public boolean checkPassword(){
-
-        return true;
-    }
-
 }

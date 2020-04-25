@@ -7,4 +7,14 @@
     <string name="name">Name</string>
     <string name="xxxxxx">XXXXXX</string>
     <string name="phone_number">Phone number</string>
+    <string name="lastname">Lastname</string>
+    <string name="firstname">Firstname</string>
+    <string name="address">Address</string>
+    <string name="registration">Registration</string>
+    <string name="information">Information</string>
+    <string name="Close">Close</string>
+    <string name="Open">Open</string>
+    <string name="Welcome">Welcome</string>
+    <string name="Settings">Settings</string>
+    <string name="Logout">Logout</string>
 </resources>

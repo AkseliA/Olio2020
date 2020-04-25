@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText email_txt, password_txt;
     FirebaseAuth fbAuth;
     private FirebaseAuth.AuthStateListener fbAuthStateListener;
-    private DatabaseReference reference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
             //For logging in we must generate hashedpassword from the input
             String salt = pwHash.getSalt();
             String hashedPw = pwHash.getHashedPassword(password, salt);
-            System.out.println(hashedPw + "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
 
             fbAuth.signInWithEmailAndPassword(email, hashedPw).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -108,22 +107,4 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
-//    public String getSaltFromDb(final String email){
-//        String salt = "";
-//        reference = FirebaseDatabase.getInstance().getReference().child("Users");
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-//
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        return salt;
-//    }
 }

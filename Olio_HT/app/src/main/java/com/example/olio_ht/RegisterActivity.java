@@ -25,10 +25,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText email_in, name_in, password1_in, password2_in, phoneNmbr_in;
+    EditText email_in, name_in, password1_in, password2_in, phoneNmbr_in, address_in, lastname_in;
     Button singUpBtn;
     FirebaseAuth fbAuth;
-    String salt, email, name, password1, password2, phoneNmbr;
+    String salt, email, name, password1, password2, phoneNmbr, surname, address;
     PasswordHasher pwHasher = new PasswordHasher();
 
 
@@ -44,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
         password2_in = findViewById(R.id.password2_txt);
         singUpBtn = findViewById(R.id.signUpBtn);
         phoneNmbr_in = findViewById(R.id.phonenumber_txt);
+        lastname_in = findViewById(R.id.surname_txt);
+        address_in = findViewById(R.id.address_txt);
 
 
 
@@ -57,6 +59,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = email_in.getText().toString();
                 name = name_in.getText().toString();
+                surname = lastname_in.getText().toString();
+                address = address_in.getText().toString();
                 phoneNmbr = phoneNmbr_in.getText().toString();
                 password1 = password1_in.getText().toString();
                 password2 = password2_in.getText().toString();
@@ -71,9 +75,19 @@ public class RegisterActivity extends AppCompatActivity {
                     name_in.requestFocus();
 
                 }else if(phoneNmbr.isEmpty()){
-                    name_in.setError("Enter phone number");
+                    phoneNmbr_in.setError("Enter phone number");
                     phoneNmbr_in.requestFocus();
-                }else if(!password1.equals(password2)){
+
+                }else if(surname.isEmpty()){
+                    lastname_in.setError("Enter lastname");
+                    lastname_in.requestFocus();
+
+                }else if(address.isEmpty()){
+                    address_in.setError("Enter phone number");
+                    address_in.requestFocus();
+                }
+
+                else if(!password1.equals(password2)){
                     Toast.makeText(RegisterActivity.this, "Passwords didn't match!", Toast.LENGTH_SHORT).show();
 
                 }else {
@@ -83,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (!check) {
                         Toast.makeText(RegisterActivity.this, "Password must be atleast 12 marks long and contain at minimum 1 number, 1 special character, small and big letters.", Toast.LENGTH_LONG).show();
                     } else{
-                        createAccount(password1, email, name, phoneNmbr);
+                        createAccount(password1, email, name, surname, phoneNmbr, address);
                     }
                 }
             }
@@ -135,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createAccount(String password1, final String email, final String name, final String phoneNmbr){
+    public void createAccount(String password1, final String email, final String fName, final String lName, final String phoneNmbr, final String address){
         salt = pwHasher.getSalt();
         final String hashedPw = pwHasher.getHashedPassword(password1, salt);
 
@@ -145,15 +159,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Toast.makeText(RegisterActivity.this, "There was an error creating an account.", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Store information to database
+                    //Store general account information to database
                     String user_id = fbAuth.getCurrentUser().getUid();
                     DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
 
                     Map newUser = new HashMap();
+                    newUser.put("first_name", fName);
+                    newUser.put("last_name", lName);
+                    newUser.put("address", address);
                     newUser.put("phone", phoneNmbr);
                     newUser.put("email", email);
-                    newUser.put("name", name);
-                    newUser.put("salt", salt);
                     current_user_db.setValue(newUser);
 
                     Toast.makeText(RegisterActivity.this, "Account created.", Toast.LENGTH_SHORT).show();
