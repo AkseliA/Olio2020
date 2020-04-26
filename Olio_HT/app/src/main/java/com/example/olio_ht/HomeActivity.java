@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -29,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     DatabaseReference userRef;
     TextView welcomeTxt, navHeaderName, navHeaderEmail;
     View header;
+    Button addAccBtn;
 
 
     @Override
@@ -40,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         header = navigationView.getHeaderView(0);
 
+        addAccBtn = findViewById(R.id.addAccBtn);
         navHeaderEmail = header.findViewById(R.id.nav_userEmailTxt);
         navHeaderName = header.findViewById(R.id.nav_userNameTxt);
         welcomeTxt = findViewById(R.id.display_userTxt);
@@ -51,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
 
         fbAuth = FirebaseAuth.getInstance();
         String user_id = fbAuth.getCurrentUser().getUid();
+
 
 
 
@@ -69,7 +73,6 @@ public class HomeActivity extends AppCompatActivity {
                 if(id == R.id.settings){
                     startActivity(new Intent(HomeActivity.this, UserSettingsActivity.class));
                 }
-
                 return true;
             }
         });
@@ -80,7 +83,8 @@ public class HomeActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                User user;
+                user = dataSnapshot.getValue(User.class);
                 welcomeTxt.setText(String.format("%s %s!", getResources().getString(R.string.Welcome), user.getFirst_name()));
                 navHeaderName.setText(user.getFirst_name() + " " + user.getLast_name());
                 navHeaderEmail.setText(user.getEmail());
@@ -93,6 +97,13 @@ public class HomeActivity extends AppCompatActivity {
         };
         userRef.addListenerForSingleValueEvent(eventListener);
 
+        addAccBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Move to an activity to create a new account
+                startActivity(new Intent(HomeActivity.this, AddAccountActivity.class));
+            }
+        });
     }
 
     @Override
@@ -108,4 +119,6 @@ public class HomeActivity extends AppCompatActivity {
         finish();
         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
     }
+
+
 }

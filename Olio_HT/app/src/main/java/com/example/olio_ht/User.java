@@ -6,7 +6,9 @@ public class User {
     private String email;
     private String address;
     private String phone;
-
+    private String credit_account;
+    private String debit_account;
+    private String savings_account;
 
     public User() {
     }
@@ -58,4 +60,5 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 }
