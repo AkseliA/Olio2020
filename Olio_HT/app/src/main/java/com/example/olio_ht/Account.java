@@ -4,6 +4,7 @@ public abstract class Account {
     double balance = 0;
     String accountNumber;
 
+    public Account(){}
     public Account(String accountNumber, double amount) {
         this.accountNumber = accountNumber;
         this.balance = amount;
@@ -14,18 +15,14 @@ public abstract class Account {
     }
 
     public void setBalance(double amount) {
-        if(balance + amount > 0){
-            balance = balance + amount;
-        }
-        else{
-            //Not enough money.
-        }
-
+        this.balance = amount;
     }
 
     public String getAccountNumber() {
         return accountNumber;
     }
 
-
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
 }

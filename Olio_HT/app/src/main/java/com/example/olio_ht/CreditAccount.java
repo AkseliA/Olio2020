@@ -7,16 +7,13 @@ public class CreditAccount extends Account {
         super(accountNumber, amount);
         this.limit = limit;
     }
+
     public int getLimit() {
         return limit;
     }
 
-    @Override
-    public void setBalance(double amount){
-        if((balance + amount) >= -limit){
-            balance += amount;
-        }else{
-            //Credit limit exceeded
-        }
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }
+

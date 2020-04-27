@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserSettingsActivity extends AppCompatActivity {
     Button editBtn, changePwBtn;
     EditText currName, currSurname, currAddress, currEmail, currPhone, newPw1, newPw2;
@@ -45,9 +48,9 @@ public class UserSettingsActivity extends AppCompatActivity {
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         fbAuth = FirebaseAuth.getInstance();
         fbDatabase = FirebaseDatabase.getInstance();
+
         String userId = fbAuth.getUid();
         reference = fbDatabase.getReference().child("Users").child(userId);
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -79,37 +82,45 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         });
     }
-    public void editUserInformation(){
+
+    public void editUserInformation() {
         String newName = currName.getText().toString();
         String newSurname = currSurname.getText().toString();
         String newEmail = currEmail.getText().toString();
         String newAddress = currAddress.getText().toString();
         String newPhone = currPhone.getText().toString();
 
-        //Create new object using these credentials
-        User user = new User(newName, newSurname, newEmail, newAddress, newPhone);
-        fbUser.updateEmail(newEmail);
+        //Update dbUser
+        String userId = fbAuth.getUid();
+        reference = fbDatabase.getReference().child("Users").child(userId);
+        Map updateAcc = new HashMap();
+        updateAcc.put("address", newAddress);
+        updateAcc.put("email", newEmail);
+        updateAcc.put("first_name", newName);
+        updateAcc.put("last_name", newSurname);
+        updateAcc.put("phone", newPhone);
+        reference.updateChildren(updateAcc);
 
-        reference.setValue(user);
+        fbUser.updateEmail(newEmail);
         finish();
     }
 
-    public void changeUserPassword(){
+    public void changeUserPassword() {
         String newPassword1 = newPw1.getText().toString();
         String newPassword2 = newPw2.getText().toString();
 
         //Compare if they match.
-        if(!newPassword1.equals(newPassword2)){
+        if (!newPassword1.equals(newPassword2)) {
             Toast.makeText(UserSettingsActivity.this, "Passwords doesn't match.", Toast.LENGTH_SHORT).show();
 
-        }else{
+        } else {
             boolean valid = false;
             //Check if they meet the minimun requirements using the same method which is used in registartion.
             RegisterActivity register = new RegisterActivity();
             valid = register.checkPassword(newPassword1);
 
             //If the password is valid -> create a hashed password using PasswordHasher class (SHA-512 and salt)
-            if(valid){
+            if (valid) {
                 String hashedPw, salt;
                 PasswordHasher passwordHasher = new PasswordHasher();
                 salt = passwordHasher.getSalt();
@@ -119,17 +130,17 @@ public class UserSettingsActivity extends AppCompatActivity {
                 fbUser.updatePassword(hashedPw).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(UserSettingsActivity.this, "Password changed.", Toast.LENGTH_SHORT).show();
                             finish();
-                        }else{
+                        } else {
                             Toast.makeText(UserSettingsActivity.this, "Something went wrong, try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
 
-            }else{
+            } else {
                 Toast.makeText(UserSettingsActivity.this, "New password didn't match the minimum requirements.", Toast.LENGTH_SHORT).show();
             }
         }

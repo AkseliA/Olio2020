@@ -13,12 +13,15 @@ public class User {
     public User() {
     }
 
-    public User(String first_name, String last_name, String email, String address, String phone) {
+    public User(String first_name, String last_name, String email, String address, String phone, String credit_account, String debit_account, String savings_account) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.address = address;
         this.phone = phone;
+        this.credit_account = credit_account;
+        this.debit_account = debit_account;
+        this.savings_account = savings_account;
     }
 
     public String getFirst_name() {
@@ -59,6 +62,30 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getCredit_account() {
+        return credit_account;
+    }
+
+    public void setCredit_account(String credit_account) {
+        this.credit_account = credit_account;
+    }
+
+    public String getDebit_account() {
+        return debit_account;
+    }
+
+    public void setDebit_account(String debit_account) {
+        this.debit_account = debit_account;
+    }
+
+    public String getSavings_account() {
+        return savings_account;
+    }
+
+    public void setSavings_account(String savings_account) {
+        this.savings_account = savings_account;
     }
 
 }

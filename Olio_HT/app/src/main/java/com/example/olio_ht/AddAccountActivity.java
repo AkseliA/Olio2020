@@ -72,7 +72,12 @@ public class AddAccountActivity extends AppCompatActivity {
         createAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compareAllAccNmbrs();
+                if (!accNmbrTxt.getText().toString().equals("0")) {
+                    compareAllAccNmbrs();
+                } else {
+                    Toast.makeText(AddAccountActivity.this, "Account number can not be 0!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -133,9 +138,9 @@ public class AddAccountActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //There is no matches
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     compareUserAccounts(accNmbr);
-                }else{
+                } else {
                     Toast.makeText(AddAccountActivity.this, "Account with that number already exists!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -156,12 +161,16 @@ public class AddAccountActivity extends AppCompatActivity {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     createAccount();
-                }else{
+                    //If account value is "0" user can create an active account
+                } else if (dataSnapshot.exists() && dataSnapshot.getValue().equals("0")) {
+                    createAccount();
+                } else {
                     Toast.makeText(AddAccountActivity.this, "You already have an account of that type!", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -169,14 +178,15 @@ public class AddAccountActivity extends AppCompatActivity {
         UIDref.addListenerForSingleValueEvent(eventListener);
     }
 
-    public String getType(){
+    public String getType() {
         String type = "";
         if (accTypeSpnr.getSelectedItemPosition() == 1) {
             type = "credit_account";
         } else if (accTypeSpnr.getSelectedItemPosition() == 2) {
             type = "debit_account";
         } else if (accTypeSpnr.getSelectedItemPosition() == 3) {
-            type = "savings_account";;
+            type = "savings_account";
+            ;
         }
         return type;
     }

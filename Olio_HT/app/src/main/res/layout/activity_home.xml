@@ -15,9 +15,9 @@
             android:id="@+id/display_userTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:padding="5dp"
             android:text=""
@@ -27,12 +27,21 @@
             android:id="@+id/addAccBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="550dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/background_circle"
-            android:text="@string/plus"
             android:gravity="center"
+            android:text="@string/plus"
             android:textSize="30sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/accountsRecyclerView"
+            android:layout_width="400dp"
+            android:layout_height="360dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"/>
 
 
     </RelativeLayout>

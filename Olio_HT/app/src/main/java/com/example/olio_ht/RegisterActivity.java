@@ -48,8 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
         address_in = findViewById(R.id.address_txt);
 
 
-
-
         fbAuth = FirebaseAuth.getInstance();
 
 
@@ -66,37 +64,34 @@ public class RegisterActivity extends AppCompatActivity {
                 password2 = password2_in.getText().toString();
 
 
-                if(email.isEmpty()){
+                if (email.isEmpty()) {
                     email_in.setError("Enter email address");
                     email_in.requestFocus();
-                }
-                else if(name.isEmpty()){
+                } else if (name.isEmpty()) {
                     name_in.setError("Enter name");
                     name_in.requestFocus();
 
-                }else if(phoneNmbr.isEmpty()){
+                } else if (phoneNmbr.isEmpty()) {
                     phoneNmbr_in.setError("Enter phone number");
                     phoneNmbr_in.requestFocus();
 
-                }else if(surname.isEmpty()){
+                } else if (surname.isEmpty()) {
                     lastname_in.setError("Enter lastname");
                     lastname_in.requestFocus();
 
-                }else if(address.isEmpty()){
+                } else if (address.isEmpty()) {
                     address_in.setError("Enter phone number");
                     address_in.requestFocus();
-                }
-
-                else if(!password1.equals(password2)){
+                } else if (!password1.equals(password2)) {
                     Toast.makeText(RegisterActivity.this, "Passwords didn't match!", Toast.LENGTH_SHORT).show();
 
-                }else {
+                } else {
                     boolean check;
                     check = checkPassword(password1);
                     //if password doesn't contain atleast 1x number + 1x special character + small and big letter + 12 marks long
                     if (!check) {
                         Toast.makeText(RegisterActivity.this, "Password must be atleast 12 marks long and contain at minimum 1 number, 1 special character, small and big letters.", Toast.LENGTH_LONG).show();
-                    } else{
+                    } else {
                         createAccount(password1, email, name, surname, phoneNmbr, address);
                     }
                 }
@@ -104,7 +99,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-    public boolean checkPassword(String pw){
+
+    public boolean checkPassword(String pw) {
         boolean valid = false;
         boolean containsSpecial = false;
         boolean containsCapital = false;
@@ -113,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
         boolean validLength = false;
 
         //Check length
-        if(pw.length() >= 12){
+        if (pw.length() >= 12) {
             validLength = true;
         }
         //creating a char array for further checking
@@ -121,27 +117,27 @@ public class RegisterActivity extends AppCompatActivity {
 
         for (char c : pwArray) {
             //Check for number
-            if(Character.isDigit(c)){
+            if (Character.isDigit(c)) {
                 containsNumber = true;
 
-            //Check for uppercase
-            }else if(Character.isUpperCase(c)){
+                //Check for uppercase
+            } else if (Character.isUpperCase(c)) {
                 containsCapital = true;
 
-            //Check for lowercase
-            }else if(Character.isLowerCase(c)){
+                //Check for lowercase
+            } else if (Character.isLowerCase(c)) {
                 containsLower = true;
             }
         }
         //Check for special character using pattern containing all non special characters.
         Pattern characters = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher match = characters.matcher(pw);
-        if(match.find()){
+        if (match.find()) {
             containsSpecial = true;
         }
 
         //Check if all are true
-        if(containsSpecial && containsCapital && containsLower && containsNumber && validLength){
+        if (containsSpecial && containsCapital && containsLower && containsNumber && validLength) {
             valid = true;
         }
         return valid;
@@ -149,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createAccount(String password1, final String email, final String fName, final String lName, final String phoneNmbr, final String address){
+    public void createAccount(String password1, final String email, final String fName, final String lName, final String phoneNmbr, final String address) {
         salt = pwHasher.getSalt();
         final String hashedPw = pwHasher.getHashedPassword(password1, salt);
 
@@ -169,6 +165,9 @@ public class RegisterActivity extends AppCompatActivity {
                     newUser.put("address", address);
                     newUser.put("phone", phoneNmbr);
                     newUser.put("email", email);
+                    newUser.put("credit_account", "0");
+                    newUser.put("debit_account", "0");
+                    newUser.put("savings_account", "0");
                     current_user_db.setValue(newUser);
 
                     Toast.makeText(RegisterActivity.this, "Account created.", Toast.LENGTH_SHORT).show();

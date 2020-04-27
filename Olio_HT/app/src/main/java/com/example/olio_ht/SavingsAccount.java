@@ -6,4 +6,12 @@ public class SavingsAccount extends Account {
     public SavingsAccount(String accountNumber, double amount) {
         super(accountNumber, amount);
     }
+
+    public double getInterest() {
+        return interest;
+    }
+
+    public void setInterest(double interest) {
+        this.interest = interest;
+    }
 }
