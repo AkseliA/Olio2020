@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity  {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
     NavigationView navigationView;
@@ -75,6 +75,8 @@ public class HomeActivity extends AppCompatActivity {
                 //SETTINGS
                 if (id == R.id.settings) {
                     startActivity(new Intent(HomeActivity.this, UserSettingsActivity.class));
+                }if (id == R.id.depositItem){
+                    startActivity(new Intent(HomeActivity.this, DepositActivity.class));
                 }
                 return true;
             }
@@ -139,7 +141,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String accNmbr;
                 int credLimit;
-                double accBalance;
+                double accBalance, interest;
+                Boolean payments, card;
                 ArrayList<Account> accountAlist = new ArrayList<>();
                 accountAlist.clear();
                 Account newAccount = null;
@@ -150,22 +153,28 @@ public class HomeActivity extends AppCompatActivity {
                         accNmbr = map.get("accountNumber").toString();
                         credLimit = Integer.parseInt(map.get("limit").toString());
                         accBalance = Double.parseDouble(map.get("balance").toString());
+                        card = (Boolean) map.get("card");
+                        payments = (Boolean) map.get("makePayments");
 
-                        newAccount = new CreditAccount(accNmbr, accBalance, credLimit);
+                        newAccount = new CreditAccount(accNmbr, accBalance, card, payments, credLimit);
 
                     } else if (ds.getKey().equals(debitAccNmbr)) {
                         Map<String, Object> map = (Map<String, Object>) ds.getValue();
                         accNmbr = map.get("accountNumber").toString();
                         accBalance = Double.parseDouble(map.get("balance").toString());
+                        card = (Boolean) map.get("card");
+                        payments = (Boolean) map.get("makePayments");
 
-                        newAccount = new DebitAccount(accNmbr, accBalance);
+                        newAccount = new DebitAccount(accNmbr, accBalance, card, payments);
 
                     } else if (ds.getKey().equals(savingsAccNmbr)) {
                         Map<String, Object> map = (Map<String, Object>) ds.getValue();
                         accNmbr = map.get("accountNumber").toString();
                         accBalance = Double.parseDouble(map.get("balance").toString());
-
-                        newAccount = new SavingsAccount(accNmbr, accBalance);
+                        card = (Boolean) map.get("card");
+                        payments = (Boolean) map.get("makePayments");
+                        interest = Double.parseDouble(map.get("interest").toString());
+                        newAccount = new SavingsAccount(accNmbr, accBalance, card, payments, interest);
                     }
                     //If account was created and it's not in the list already ->add to list
                     if (newAccount != null) {
@@ -204,6 +213,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         return true;
     }
+
 
 
 }

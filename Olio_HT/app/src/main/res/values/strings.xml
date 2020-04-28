@@ -19,12 +19,15 @@
     <string name="Logout">Logout</string>
     <string name="user_information">User information</string>
     <string name="edit">Edit</string>
-    <string name="add">Add</string>
     <string name="plus">+</string>
     <string name="account_number">Account number</string>
     <string name="starting_balance">Starting balance</string>
     <string name="credit_limit">Credit limit</string>
     <string name="create">Create</string>
+    <string name="make_a_deposit">Make a deposit</string>
+    <string name="amount_to_add">Amount to add</string>
+    <string name="add">Add</string>
+    <string name="confirm">Confirm</string>
 
     <string-array name="account_typeArray">
         <item>Account type</item>

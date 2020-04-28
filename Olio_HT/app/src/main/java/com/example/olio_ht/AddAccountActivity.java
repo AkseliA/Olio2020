@@ -98,18 +98,20 @@ public class AddAccountActivity extends AppCompatActivity {
         accNmbr = accNmbrTxt.getText().toString();
         startingBalance = Double.parseDouble(startingbalanceTxt.getText().toString());
 
+        //NOTE: By default boolean makepayments and card is set to false AND interest is 1.8(%)!
         if (!creditLimitTxt.getText().toString().equals("")) {
             credLimit = Integer.parseInt(creditLimitTxt.getText().toString());
         }
         if (accTypeSpnr.getSelectedItemPosition() == 1) {
             type = "credit_account";
-            newAcc = new CreditAccount(accNmbr, startingBalance, credLimit);
+            newAcc = new CreditAccount(accNmbr, startingBalance, false, false, credLimit);
         } else if (accTypeSpnr.getSelectedItemPosition() == 2) {
             type = "debit_account";
-            newAcc = new DebitAccount(accNmbr, startingBalance);
+            newAcc = new DebitAccount(accNmbr, startingBalance, false, false);
         } else if (accTypeSpnr.getSelectedItemPosition() == 3) {
             type = "savings_account";
-            newAcc = new SavingsAccount(accNmbr, startingBalance);
+            newAcc = new SavingsAccount(accNmbr, startingBalance, false, false, 1.8);
+
         }
 
 

@@ -38,7 +38,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accountsRecyclerView"
             android:layout_width="400dp"
-            android:layout_height="360dp"
+            android:layout_height="270dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="50dp"/>
