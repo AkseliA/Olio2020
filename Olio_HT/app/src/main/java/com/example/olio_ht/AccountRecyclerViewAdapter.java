@@ -45,9 +45,13 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         ((Item) holder).dispNumber.setText("Account number: " + items.get(position).getAccountNumber());
         ((Item) holder).dispBalance.setText("Balance: " + items.get(position).getBalance() + "€");
         if(type.equals("Savings account")){
-            ((Item) holder).dispInterest.setText("Interest: " + ((SavingsAccount)(items.get(position))).getInterest() + "%");
+            ((Item) holder).dispMisc.setText("Interest: " + ((SavingsAccount)(items.get(position))).getInterest() + "%");
+        }
+        if(type.equals("Credit account")){
+            ((Item) holder).dispMisc.setText("Credit limit: " + ((CreditAccount)(items.get(position))).getLimit() + "€");
         }
 
+        //Onclicklistener to move to account based "settings"
         ((Item) holder).parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +73,7 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView dispType;
         TextView dispNumber;
         TextView dispBalance;
-        TextView dispInterest;
+        TextView dispMisc;
         ConstraintLayout parentLayout;
 
 
@@ -79,7 +83,7 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             dispType = itemView.findViewById(R.id.displayAccountType);
             dispNumber = itemView.findViewById(R.id.displayAccountNumber);
             dispBalance = itemView.findViewById(R.id.displayAccountBalance);
-            dispInterest = itemView.findViewById(R.id.displayAccountInterest);
+            dispMisc = itemView.findViewById(R.id.displayAccountMisc);
             parentLayout = itemView.findViewById(R.id.accounts_parent_layout);
             
         }

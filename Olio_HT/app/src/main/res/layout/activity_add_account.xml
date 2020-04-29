@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddAccountActivity">
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -37,6 +38,7 @@
         android:ems="10"
         android:hint="@string/account_number"
         android:inputType="text"
+        android:maxLength="8"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

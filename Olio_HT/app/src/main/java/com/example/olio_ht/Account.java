@@ -5,6 +5,7 @@ package com.example.olio_ht;
 public abstract class Account {
     double balance = 0;
     String accountNumber;
+    String cardNumber;
     boolean card;
     boolean makePayments;
 

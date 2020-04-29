@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity
+            android:name=".AccountSettingsActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".DepositActivity" />
         <activity android:name=".AddAccountActivity" />
         <activity android:name=".UserSettingsActivity" />

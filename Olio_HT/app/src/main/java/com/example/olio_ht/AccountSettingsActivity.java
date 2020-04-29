@@ -1,16 +1,22 @@
 package com.example.olio_ht;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,16 +24,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class AccountSettingsActivity extends AppCompatActivity {
     TextView displayAccTxt;
     Switch transactionSwitch, cardSwitch;
     Button deleteAccBtn, confirmBtn;
+    EditText newCreditLimitTxt;
     Intent intent;
     FirebaseAuth fbAuth;
-    DatabaseReference reference;
+    FirebaseUser fbUser;
+    DatabaseReference reference, userRef;
     FirebaseDatabase fbDatabase;
+    String type, number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +50,14 @@ public class AccountSettingsActivity extends AppCompatActivity {
         cardSwitch = findViewById(R.id.create_a_card_switch);
         deleteAccBtn = findViewById(R.id.delete_the_acc_btn);
         confirmBtn = findViewById(R.id.confirm_btn);
+        newCreditLimitTxt = findViewById(R.id.newCredit_limit_txt);
         intent = getIntent();
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        fbAuth = FirebaseAuth.getInstance();
 
         //retrieve extras from intent
-        String type = intent.getStringExtra("account_type");
-        String number = intent.getStringExtra("account_number");
+        type = intent.getStringExtra("account_type");
+        number = intent.getStringExtra("account_number");
         //Set displayAcctxt
         displayAccTxt.setText(type + ": " + number);
 
@@ -53,16 +66,36 @@ public class AccountSettingsActivity extends AppCompatActivity {
         //Load account info + data
         loadAccountInfo(number, type);
 
+        //DeleteAcc button onClickListener
+        deleteAccBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAndShowAlertDialog();
+            }
+        });
 
+        //OnClickListener for confirmButton
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //CHECK INPUTS!
+                String credLimit = newCreditLimitTxt.getText().toString();
+                if(credLimit.equals("")){
+                    credLimit = "0";
+                }
+                editAccountSettings(number, credLimit);
+                finish();
+            }
+        });
 
 
     }
 
     //Loads account information and launches method to set switches correctly.
-    public void loadAccountInfo(String accNmbr, final String type){
+    public void loadAccountInfo(String accNmbr, final String type) {
         fbDatabase = FirebaseDatabase.getInstance();
         reference = fbDatabase.getReference().child("Accounts").child(accNmbr);
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String accNmbr;
@@ -70,19 +103,22 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 double accBalance, interest;
                 Boolean payments, card;
                 Account newAccount = null;
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     Toast.makeText(AccountSettingsActivity.this, "Oops something went wrong!", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     //Create new object based on type
-                    if(type.contains("Credit")){
+                    if (type.contains("Credit")) {
                         newAccount = dataSnapshot.getValue(CreditAccount.class);
-                    }else if(type.contains("Debit")){
+                    } else if (type.contains("Debit")) {
                         newAccount = dataSnapshot.getValue(DebitAccount.class);
-                    }else{
+                        newCreditLimitTxt.setVisibility(View.INVISIBLE);
+                    } else {
                         newAccount = dataSnapshot.getValue(SavingsAccount.class);
+                        cardSwitch.setVisibility(View.INVISIBLE);
+                        newCreditLimitTxt.setVisibility(View.INVISIBLE);
                     }
                 }
-                setSwitches(newAccount);
+                setOptions(newAccount);
             }
 
             @Override
@@ -92,20 +128,82 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
     }
 
-    public void setSwitches(Account acc){
+    public void setOptions(Account acc) {
         //If has card
-        if(acc.isCard()){
+        if (acc.isCard()) {
             cardSwitch.setChecked(true);
-        }else{
+        } else {
             cardSwitch.setChecked(false);
         }
 
         //if can make payments
-        if(acc.isMakePayments()){
+        if (acc.isMakePayments()) {
             transactionSwitch.setChecked(true);
-        }else{
+        } else {
             transactionSwitch.setChecked(false);
         }
+
+    }
+
+    //When delete account button is pressed, show alertDialog
+    //Source: https://stackoverflow.com/questions/25670051/how-to-create-yes-no-alert-dialog-in-fragment-in-android
+    public void createAndShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AccountSettingsActivity.this);
+        builder.setTitle("Are you sure? Changes are irreversible.");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Yes, delete account
+                dialog.dismiss();
+                deleteAccountFromDb(number);
+                //Return to HomeActivity
+                finish();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Do nothing.
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void deleteAccountFromDb(String account_number) {
+        //Modify type_account value to 0 from child "Users"
+        String userId = fbAuth.getUid();
+        userRef = fbDatabase.getReference().child("Users").child(userId);
+        Map updateAcc = new HashMap();
+        //get childname with String type
+        if (type.contains("Credit")) {
+            updateAcc.put("credit_account", "0");
+        } else if (type.contains("Debit")) {
+            updateAcc.put("debit_account", "0");
+        } else {
+            updateAcc.put("savings_account", "0");
+        }
+        userRef.updateChildren(updateAcc);
+
+        //remove it from child "Accounts"
+        reference = fbDatabase.getReference().child("Accounts");
+        reference.child(account_number).removeValue();
+    }
+
+    public void editAccountSettings(String account_number, String creditLimit){
+        boolean makepayments = transactionSwitch.isChecked();
+        boolean hasCard = cardSwitch.isChecked();
+        int credLimit = Integer.parseInt(creditLimit);
+        reference = fbDatabase.getReference().child("Accounts").child(account_number);
+
+        Map editAcc = new HashMap();
+
+        editAcc.put("makePayments", makepayments);
+        editAcc.put("card", hasCard);
+        if(credLimit > 0){
+            editAcc.put("limit", credLimit);
+        }
+
+        reference.updateChildren(editAcc);
 
     }
 }
