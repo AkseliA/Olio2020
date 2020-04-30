@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText email_txt, password_txt;
     FirebaseAuth fbAuth;
     private FirebaseAuth.AuthStateListener fbAuthStateListener;
+    Context context;
 
 
     @Override
@@ -48,6 +50,9 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser fbUser = fbAuth.getCurrentUser();
            }
         };
+
+        context = getApplicationContext();
+        InputOutputXml ioXml = new InputOutputXml();
 
 
         signUp.setOnClickListener(new View.OnClickListener() {

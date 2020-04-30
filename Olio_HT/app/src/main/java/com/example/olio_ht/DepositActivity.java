@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +32,10 @@ public class DepositActivity extends AppCompatActivity {
     FirebaseAuth fbAuth;
     DatabaseReference reference, userRef;
     FirebaseDatabase fbDatabase;
+    InputOutputXml ioXml;
+    Transaction newTransaction;
+    Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +138,7 @@ public class DepositActivity extends AppCompatActivity {
 
     }
 
-    //Retrieves old balance, and pushes new balance to Firebase
+    //Retrieves old balance, and pushes new balance to Firebase. ALSO makes a transaction and writes it to XML.
     public void editDBAccount(final String account_Number, final double amount){
         fbDatabase = FirebaseDatabase.getInstance();
         reference = fbDatabase.getReference().child("Accounts").child(account_Number);
@@ -150,6 +157,18 @@ public class DepositActivity extends AppCompatActivity {
                 updateAcc.put("balance", newbalance);
                 userRef.updateChildren(updateAcc);
                 Toast.makeText(DepositActivity.this, "New balance: " + newbalance + "€", Toast.LENGTH_SHORT).show();
+
+
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDateTime now = LocalDateTime.now();
+                String date = dtf.format(now).toString();
+                String[] parts = accountsSpnr.getSelectedItem().toString().split(": ");
+                String to = parts[0];
+                context = getApplicationContext();
+                //New transaction
+                newTransaction = new Transaction("Deposit", to, date, Double.toString(amount), Double.toString(newbalance), account_Number);
+                ioXml = new InputOutputXml();
+                ioXml.writeTransaction(context, newTransaction);
             }
 
             @Override
