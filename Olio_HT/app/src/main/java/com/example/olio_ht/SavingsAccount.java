@@ -3,8 +3,8 @@ package com.example.olio_ht;
 public class SavingsAccount extends Account {
     private double interest;
 
-    public SavingsAccount(String accountNumber, double amount, boolean card, boolean makePayments, double interest) {
-        super(accountNumber, amount, card, makePayments);
+    public SavingsAccount(String accountNumber, double amount, String cardNumber, boolean makePayments, double interest) {
+        super(accountNumber, amount, cardNumber, makePayments);
         this.interest = interest;
     }
     public SavingsAccount(){}

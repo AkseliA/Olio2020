@@ -139,10 +139,10 @@ public class HomeActivity extends AppCompatActivity  {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String accNmbr;
+                String accNmbr, card;
                 int credLimit;
                 double accBalance, interest;
-                Boolean payments, card;
+                Boolean payments;
                 ArrayList<Account> accountAlist = new ArrayList<>();
                 accountAlist.clear();
                 Account newAccount = null;
@@ -153,7 +153,7 @@ public class HomeActivity extends AppCompatActivity  {
                         accNmbr = map.get("accountNumber").toString();
                         credLimit = Integer.parseInt(map.get("limit").toString());
                         accBalance = Double.parseDouble(map.get("balance").toString());
-                        card = (Boolean) map.get("card");
+                        card = map.get("cardNumber").toString();
                         payments = (Boolean) map.get("makePayments");
 
                         newAccount = new CreditAccount(accNmbr, accBalance, card, payments, credLimit);
@@ -162,7 +162,7 @@ public class HomeActivity extends AppCompatActivity  {
                         Map<String, Object> map = (Map<String, Object>) ds.getValue();
                         accNmbr = map.get("accountNumber").toString();
                         accBalance = Double.parseDouble(map.get("balance").toString());
-                        card = (Boolean) map.get("card");
+                        card = map.get("cardNumber").toString();
                         payments = (Boolean) map.get("makePayments");
 
                         newAccount = new DebitAccount(accNmbr, accBalance, card, payments);
@@ -171,7 +171,7 @@ public class HomeActivity extends AppCompatActivity  {
                         Map<String, Object> map = (Map<String, Object>) ds.getValue();
                         accNmbr = map.get("accountNumber").toString();
                         accBalance = Double.parseDouble(map.get("balance").toString());
-                        card = (Boolean) map.get("card");
+                        card = map.get("cardNumber").toString();
                         payments = (Boolean) map.get("makePayments");
                         interest = Double.parseDouble(map.get("interest").toString());
                         newAccount = new SavingsAccount(accNmbr, accBalance, card, payments, interest);

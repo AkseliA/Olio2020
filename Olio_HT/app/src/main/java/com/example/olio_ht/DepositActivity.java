@@ -161,12 +161,13 @@ public class DepositActivity extends AppCompatActivity {
 
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDateTime now = LocalDateTime.now();
-                String date = dtf.format(now).toString();
+                String date = dtf.format(now);
                 String[] parts = accountsSpnr.getSelectedItem().toString().split(": ");
                 String to = parts[0];
                 context = getApplicationContext();
                 //New transaction
-                newTransaction = new Transaction("Deposit", to, date, Double.toString(amount), Double.toString(newbalance), account_Number);
+                String action = "Deposit to " + to;
+                newTransaction = new Transaction(action, date, Double.toString(amount), Double.toString(newbalance), account_Number);
                 ioXml = new InputOutputXml();
                 ioXml.writeTransaction(context, newTransaction);
             }

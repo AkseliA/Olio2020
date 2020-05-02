@@ -3,6 +3,7 @@ package com.example.olio_ht;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.Sampler;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +34,10 @@ public class AddAccountActivity extends AppCompatActivity {
     FirebaseAuth fbAuth;
     DatabaseReference reference, UIDref;
     FirebaseDatabase fbDatabase;
+    DateTimeFormatter dtf;
+    LocalDateTime now;
+    InputOutputXml ioXml;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +51,16 @@ public class AddAccountActivity extends AppCompatActivity {
         startingbalanceTxt = findViewById(R.id.setBalance_txt);
         fbAuth = FirebaseAuth.getInstance();
         fbDatabase = FirebaseDatabase.getInstance();
-
+        createAccBtn = findViewById(R.id.createAcc_Btn);
+        ioXml = new InputOutputXml();
+        context = getApplicationContext();
         //Only show this textfield when creditAccount is chosen
         creditLimitTxt.setVisibility(View.INVISIBLE);
 
+        //DATETIME
+        dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        now = LocalDateTime.now();
 
-        createAccBtn = findViewById(R.id.createAcc_Btn);
 
         setAccTypeSpnr();
         accTypeSpnr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -98,19 +109,19 @@ public class AddAccountActivity extends AppCompatActivity {
         accNmbr = accNmbrTxt.getText().toString();
         startingBalance = Double.parseDouble(startingbalanceTxt.getText().toString());
 
-        //NOTE: By default boolean makepayments and card is set to false AND interest is 1.8(%)!
+        //NOTE: By default boolean makepayments set to false, cardnumber to 0 AND interest is 1.8(%)!
         if (!creditLimitTxt.getText().toString().equals("")) {
             credLimit = Integer.parseInt(creditLimitTxt.getText().toString());
         }
         if (accTypeSpnr.getSelectedItemPosition() == 1) {
             type = "credit_account";
-            newAcc = new CreditAccount(accNmbr, startingBalance, false, false, credLimit);
+            newAcc = new CreditAccount(accNmbr, startingBalance, "0", false, credLimit);
         } else if (accTypeSpnr.getSelectedItemPosition() == 2) {
             type = "debit_account";
-            newAcc = new DebitAccount(accNmbr, startingBalance, false, false);
+            newAcc = new DebitAccount(accNmbr, startingBalance, "0", false);
         } else if (accTypeSpnr.getSelectedItemPosition() == 3) {
             type = "savings_account";
-            newAcc = new SavingsAccount(accNmbr, startingBalance, false, false, 1.8);
+            newAcc = new SavingsAccount(accNmbr, startingBalance, "0", false, 1.8);
 
         }
 
@@ -124,6 +135,11 @@ public class AddAccountActivity extends AppCompatActivity {
         updateAcc.put(type, accNmbr);
         UIDref.updateChildren(updateAcc);
 
+        //Write transactions.XML
+        String date = dtf.format(now);
+        String action = accTypeSpnr.getSelectedItem().toString() + " account created";
+        Transaction newTrans = new Transaction(action,date,"", Double.toString(startingBalance),accNmbr);
+        ioXml.writeTransaction(context, newTrans);
 
         Toast.makeText(AddAccountActivity.this, "Account created.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(AddAccountActivity.this, HomeActivity.class);

@@ -1,19 +1,19 @@
 package com.example.olio_ht;
 
 
-
 public abstract class Account {
     double balance = 0;
     String accountNumber;
     String cardNumber;
-    boolean card;
     boolean makePayments;
 
-    public Account(){}
-    public Account(String accountNumber, double amount, boolean card, boolean makePayments) {
+    public Account() {
+    }
+
+    public Account(String accountNumber, double amount, String cardNumber, boolean makePayments) {
         this.accountNumber = accountNumber;
         this.balance = amount;
-        this.card = card;
+        this.cardNumber = cardNumber;
         this.makePayments = makePayments;
     }
 
@@ -39,13 +39,7 @@ public abstract class Account {
     public String toString() {
         return Account.class.getSimpleName() + " " + accountNumber;
     }
-    public boolean isCard() {
-        return card;
-    }
 
-    public void setCard(boolean card) {
-        this.card = card;
-    }
 
     public boolean isMakePayments() {
         return makePayments;
@@ -53,5 +47,13 @@ public abstract class Account {
 
     public void setMakePayments(boolean makePayments) {
         this.makePayments = makePayments;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }

@@ -1,8 +1,6 @@
 package com.example.olio_ht;
 
 import android.content.Context;
-import android.os.Environment;
-import android.renderscript.ScriptGroup;
 import android.util.Xml;
 
 import org.w3c.dom.Document;
@@ -13,12 +11,9 @@ import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.RandomAccessFile;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
@@ -71,14 +66,11 @@ public class InputOutputXml {
                 //Root item
                 Element newItem = doc.createElement("item");
 
-                //from
-                Element from = doc.createElement("from");
-                from.appendChild(doc.createTextNode(addTrans.getFrom()));
-                newItem.appendChild(from);
-                //to
-                Element to = doc.createElement("to");
-                to.appendChild(doc.createTextNode(addTrans.getTo()));
-                newItem.appendChild(to);
+                //action to display what happened
+                Element action = doc.createElement("action");
+                action.appendChild(doc.createTextNode(addTrans.getAction()));
+                newItem.appendChild(action);
+
                 //date
                 Element date = doc.createElement("date");
                 date.appendChild(doc.createTextNode(addTrans.getDate()));
@@ -92,7 +84,7 @@ public class InputOutputXml {
                 balance.appendChild(doc.createTextNode(addTrans.getBalance()));
                 newItem.appendChild(balance);
                 //amount
-                Element account_number = doc.createElement("account_number");
+                Element account_number = doc.createElement("acc_number");
                 account_number.appendChild(doc.createTextNode(addTrans.getAccNmbr()));
                 newItem.appendChild(account_number);
 
@@ -134,13 +126,9 @@ public class InputOutputXml {
 
                 serializer.startTag(null, "item");
 
-                serializer.startTag(null, "from");
-                serializer.text(addTrans.getFrom());
-                serializer.endTag(null, "from");
-
-                serializer.startTag(null, "to");
-                serializer.text(addTrans.getTo());
-                serializer.endTag(null, "to");
+                serializer.startTag(null, "action");
+                serializer.text(addTrans.getAction());
+                serializer.endTag(null, "action");
 
                 serializer.startTag(null, "date");
                 serializer.text(addTrans.getDate());
@@ -179,8 +167,9 @@ public class InputOutputXml {
 
     }
 
-    public void readTransactionXml(Context context) {
+    public ArrayList<Transaction> readTransactionXml(Context context, String accNumber) {
         try {
+            transactionArrayList.clear();
             InputStream ins = context.openFileInput(fileName);
 
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -194,16 +183,17 @@ public class InputOutputXml {
                 if (node.getNodeType() == node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    String from = element.getElementsByTagName("from").item(0).getTextContent();
-                    String to = element.getElementsByTagName("to").item(0).getTextContent();
+                    String action = element.getElementsByTagName("action").item(0).getTextContent();
                     String date = element.getElementsByTagName("date").item(0).getTextContent();
                     String amount = element.getElementsByTagName("amount").item(0).getTextContent();
                     String balance = element.getElementsByTagName("balance").item(0).getTextContent();
                     String accNmbr = element.getElementsByTagName("acc_number").item(0).getTextContent();
 
-                    //Finally create an object from these elements and add it to the arrayList
-                    Transaction transaction = new Transaction(from, to, date, amount, balance, accNmbr);
-                    transactionArrayList.add(transaction);
+                    //If the account number matches, creates a transaction object and stores it into an arraylist
+                    if(accNmbr.equals(accNumber)){
+                        Transaction transaction = new Transaction(action, date, amount, balance, accNmbr);
+                        transactionArrayList.add(transaction);
+                    }
                 }
             }
         } catch (ParserConfigurationException e) {
@@ -215,6 +205,6 @@ public class InputOutputXml {
         } finally {
             System.out.println("#################### DONE ####################");
         }
+        return transactionArrayList;
     }
-
 }

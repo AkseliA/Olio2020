@@ -28,6 +28,7 @@
     <string name="amount_to_add">Amount to add</string>
     <string name="add">Add</string>
     <string name="confirm">Confirm</string>
+    <string name="make_a_withdrawal">Make a withdrawal</string>
 
     <string-array name="account_typeArray">
         <item>Account type</item>

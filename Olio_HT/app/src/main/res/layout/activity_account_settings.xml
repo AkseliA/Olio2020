@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,126 +11,104 @@
         android:id="@+id/displayAccount_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
         android:text=""
         android:textColor="#000000"
         android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01" />
+        android:textStyle="bold" />
 
     <Switch
         android:id="@+id/create_a_card_switch"
         android:layout_width="200dp"
         android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/background_square"
         android:padding="10dp"
         android:text="Active card   "
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.195" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="130dp"
+ />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
         android:text="@string/Settings"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.063" />
+        android:layout_alignParentTop="true"
+ />
 
     <Switch
         android:id="@+id/transaction_switch"
         android:layout_width="200dp"
         android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/background_square"
         android:padding="10dp"
         android:text="Make payments   "
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.117" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp"
+ />
 
     <EditText
         android:id="@+id/newCredit_limit_txt"
         android:layout_width="200dp"
         android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/background_square"
         android:ems="10"
         android:hint="Enter new credit limit"
         android:inputType="number"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.272" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="180dp" />
 
     <Button
         android:id="@+id/confirm_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/background_square"
         android:text="@string/confirm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="230dp" />
 
     <Button
         android:id="@+id/delete_the_acc_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/background_square"
         android:padding="5dp"
-        android:text="Delete the account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97" />
+        android:layout_alignParentBottom="true"
+        android:text="Delete the account" />
 
-    <ListView
-        android:id="@+id/transaction_listView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/transaction_recyclerView"
         android:layout_width="400dp"
-        android:layout_height="270dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        android:layout_height="230dp"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true" />
 
     <TextView
         android:id="@+id/transaction_history_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:text="Transaction history"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.436" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="280dp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

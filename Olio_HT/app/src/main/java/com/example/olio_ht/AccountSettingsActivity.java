@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,12 +41,18 @@ public class AccountSettingsActivity extends AppCompatActivity {
     Switch transactionSwitch, cardSwitch;
     Button deleteAccBtn, confirmBtn;
     EditText newCreditLimitTxt;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager recyclerLayoutMgr;
     Intent intent;
     FirebaseAuth fbAuth;
     FirebaseUser fbUser;
     DatabaseReference reference, userRef;
     FirebaseDatabase fbDatabase;
     String type, number;
+    InputOutputXml ioXml;
+    Context context;
+    DateTimeFormatter dtf;
+    LocalDateTime now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +66,12 @@ public class AccountSettingsActivity extends AppCompatActivity {
         deleteAccBtn = findViewById(R.id.delete_the_acc_btn);
         confirmBtn = findViewById(R.id.confirm_btn);
         newCreditLimitTxt = findViewById(R.id.newCredit_limit_txt);
+        recyclerView = findViewById(R.id.transaction_recyclerView);
         intent = getIntent();
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         fbAuth = FirebaseAuth.getInstance();
+        context = getApplicationContext();
+        ioXml = new InputOutputXml();
 
         //retrieve extras from intent
         type = intent.getStringExtra("account_type");
@@ -61,10 +79,16 @@ public class AccountSettingsActivity extends AppCompatActivity {
         //Set displayAcctxt
         displayAccTxt.setText(type + ": " + number);
 
-        //TRANSACTION HISTORY PUUTTUU
+        //DATETIME
+        dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        now = LocalDateTime.now();
 
         //Load account info + data
         loadAccountInfo(number, type);
+
+        //Display transactions
+        displayTransactions();
+
 
         //DeleteAcc button onClickListener
         deleteAccBtn.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +115,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     }
 
+
     //Loads account information and launches method to set switches correctly.
     public void loadAccountInfo(String accNmbr, final String type) {
         fbDatabase = FirebaseDatabase.getInstance();
@@ -98,10 +123,10 @@ public class AccountSettingsActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String accNmbr;
+                String accNmbr, cardNmbr;
                 int credLimit;
                 double accBalance, interest;
-                Boolean payments, card;
+                Boolean payments;
                 Account newAccount = null;
                 if (!dataSnapshot.exists()) {
                     Toast.makeText(AccountSettingsActivity.this, "Oops something went wrong!", Toast.LENGTH_SHORT).show();
@@ -130,7 +155,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     public void setOptions(Account acc) {
         //If has card
-        if (acc.isCard()) {
+        if (!acc.getCardNumber().equals("0")) {
             cardSwitch.setChecked(true);
         } else {
             cardSwitch.setChecked(false);
@@ -201,9 +226,28 @@ public class AccountSettingsActivity extends AppCompatActivity {
         editAcc.put("card", hasCard);
         if(credLimit > 0){
             editAcc.put("limit", credLimit);
+            //New transaction when limit is changed
+            String date = dtf.format(now);
+            String action = "Credit limit set: " + creditLimit;
+            Transaction newTrans = new Transaction(action,date,"","",account_number);
+
+            //Write action to transactions xml
+            ioXml.writeTransaction(context, newTrans);
+
         }
-
         reference.updateChildren(editAcc);
+    }
 
+    public void displayTransactions() {
+        ArrayList<Transaction> transArrList = new ArrayList<>();
+        transArrList = ioXml.readTransactionXml(context, number);
+        //Reversing arraylist so that newest actions are at the top of the recyclerview
+        Collections.reverse(transArrList);
+        //Linear layout manager
+        recyclerLayoutMgr = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(recyclerLayoutMgr);
+
+        //Specify adapter for recyclerView
+        recyclerView.setAdapter(new TransactionRecyclerViewAdapter(this, transArrList));
     }
 }

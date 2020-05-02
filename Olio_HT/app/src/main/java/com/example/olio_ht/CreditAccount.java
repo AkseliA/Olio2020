@@ -3,8 +3,8 @@ package com.example.olio_ht;
 public class CreditAccount extends Account {
     private int limit;
 
-    public CreditAccount(String accountNumber, double amount, boolean card, boolean makePayments, int limit) {
-        super(accountNumber, amount, card, makePayments);
+    public CreditAccount(String accountNumber, double amount, String cardNumber, boolean makePayments, int limit) {
+        super(accountNumber, amount, cardNumber, makePayments);
         this.limit = limit;
     }
 

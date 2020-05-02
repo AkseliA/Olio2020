@@ -3,8 +3,8 @@ package com.example.olio_ht;
 public class DebitAccount extends Account {
 
 
-    public DebitAccount(String accountNumber, double amount, boolean card, boolean makePayments) {
-        super(accountNumber, amount, card, makePayments);
+    public DebitAccount(String accountNumber, double amount, String cardNumber, boolean makePayments) {
+        super(accountNumber, amount, cardNumber, makePayments);
     }
     public DebitAccount(){}
 }

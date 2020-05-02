@@ -1,37 +1,30 @@
 package com.example.olio_ht;
 
 public class Transaction {
-    private String from;
-    private String to;
+    private String action;
     private String date;
     private String amount;
     private String balance;
     private String accNmbr;
 
-    public Transaction(String from, String to, String date, String amount, String balance, String accNmbr){
-        this.from = from;
-        this.to = to;
+    public Transaction(String action, String date, String amount, String balance, String accNmbr) {
+        this.action = action;
         this.date = date;
         this.amount = amount;
         this.balance = balance;
         this.accNmbr = accNmbr;
 
     }
-    public Transaction(){}
-    public String getFrom() {
-        return from;
+
+    public Transaction() {
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public String getAction() {
+        return action;
     }
 
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public String getDate() {
