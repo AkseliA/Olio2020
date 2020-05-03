@@ -83,10 +83,10 @@ public class AddAccountActivity extends AppCompatActivity {
         createAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!accNmbrTxt.getText().toString().equals("0")) {
+                if (accNmbrTxt.getText().toString().length() == 12) {
                     compareAllAccNmbrs();
                 } else {
-                    Toast.makeText(AddAccountActivity.this, "Account number can not be 0!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddAccountActivity.this, "Account number must be 12 digits!", Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -27,12 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
     NavigationView navigationView;
     RecyclerView accRecyclerView;
-    RecyclerView.LayoutManager accRecyclerLayoutMgr;
+    RecyclerView cardRecyclerView;
+    RecyclerView.LayoutManager accRecyclerLayoutMgr, cardRecyclerLayoutMgr;
     FirebaseAuth fbAuth;
     DatabaseReference reference;
     FirebaseDatabase fbDatabase;
@@ -51,6 +52,7 @@ public class HomeActivity extends AppCompatActivity  {
         header = navigationView.getHeaderView(0);
 
         accRecyclerView = findViewById(R.id.accountsRecyclerView);
+        cardRecyclerView = findViewById(R.id.cardsRecyclerView);
         addAccBtn = findViewById(R.id.addAccBtn);
         navHeaderEmail = header.findViewById(R.id.nav_userEmailTxt);
         navHeaderName = header.findViewById(R.id.nav_userNameTxt);
@@ -75,7 +77,8 @@ public class HomeActivity extends AppCompatActivity  {
                 //SETTINGS
                 if (id == R.id.settings) {
                     startActivity(new Intent(HomeActivity.this, UserSettingsActivity.class));
-                }if (id == R.id.depositItem){
+                }
+                if (id == R.id.depositItem) {
                     startActivity(new Intent(HomeActivity.this, DepositActivity.class));
                 }
                 return true;
@@ -132,6 +135,7 @@ public class HomeActivity extends AppCompatActivity  {
         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
     }
 
+    //This function gets user's accounts and cards from the firebase database and creates arraylists to display them using recyclerview
     public void fetchUsersAccounts(final String creditAccNmbr, final String debitAccNmbr, final String savingsAccNmbr) {
         String userId = fbAuth.getUid();
         fbDatabase = FirebaseDatabase.getInstance();
@@ -144,7 +148,10 @@ public class HomeActivity extends AppCompatActivity  {
                 double accBalance, interest;
                 Boolean payments;
                 ArrayList<Account> accountAlist = new ArrayList<>();
+                ArrayList<Card> cardAlist = new ArrayList<>();
+                cardAlist.clear();
                 accountAlist.clear();
+                Card newCard = null;
                 Account newAccount = null;
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //Retreive credit acc
@@ -157,7 +164,11 @@ public class HomeActivity extends AppCompatActivity  {
                         payments = (Boolean) map.get("makePayments");
 
                         newAccount = new CreditAccount(accNmbr, accBalance, card, payments, credLimit);
+                        if (!card.equals("0")) {
+                            newCard = new Card(card, "Credit card");
+                        }
 
+                        //debit account
                     } else if (ds.getKey().equals(debitAccNmbr)) {
                         Map<String, Object> map = (Map<String, Object>) ds.getValue();
                         accNmbr = map.get("accountNumber").toString();
@@ -166,7 +177,11 @@ public class HomeActivity extends AppCompatActivity  {
                         payments = (Boolean) map.get("makePayments");
 
                         newAccount = new DebitAccount(accNmbr, accBalance, card, payments);
+                        if (!card.equals("0")) {
+                            newCard = new Card(card, "Debit card");
+                        }
 
+                        //Savings account
                     } else if (ds.getKey().equals(savingsAccNmbr)) {
                         Map<String, Object> map = (Map<String, Object>) ds.getValue();
                         accNmbr = map.get("accountNumber").toString();
@@ -178,13 +193,18 @@ public class HomeActivity extends AppCompatActivity  {
                     }
                     //If account was created and it's not in the list already ->add to list
                     if (newAccount != null) {
-                        if (checkList(accountAlist, newAccount.getAccountNumber()))
+                        if (checkAccList(accountAlist, newAccount.getAccountNumber()))
                             accountAlist.add(newAccount);
                     }
+                    //If card was created and it's not in the list already ->add to list
+                    if (newCard != null) {
+                        if (checkCardList(cardAlist, newCard.getCardNumber())) {
+                            cardAlist.add(newCard);
+                        }
+                    }
                 }
-
+                displayCards(cardAlist);
                 displayAccounts(accountAlist);
-
             }
 
             @Override
@@ -204,8 +224,17 @@ public class HomeActivity extends AppCompatActivity  {
         accRecyclerView.setAdapter(new AccountRecyclerViewAdapter(this, accountArrayList));
     }
 
+    public void displayCards(ArrayList<Card> cardArrayList) {
+        //Linear layout manager
+        cardRecyclerLayoutMgr = new LinearLayoutManager(this);
+        cardRecyclerView.setLayoutManager(cardRecyclerLayoutMgr);
+
+        //Specify adapter for recyclerView
+        cardRecyclerView.setAdapter(new CardRecyclerViewAdapter(this, cardArrayList));
+    }
+
     //This function checks if arraylist already contains an object with the same accountnumber. If it doesn't contain the function returns TRUE
-    public boolean checkList(ArrayList<Account> aList, String accountNumber) {
+    public boolean checkAccList(ArrayList<Account> aList, String accountNumber) {
         for (Account account : aList) {
             if (account.getAccountNumber().equals(accountNumber)) {
                 return false;
@@ -214,6 +243,15 @@ public class HomeActivity extends AppCompatActivity  {
         return true;
     }
 
+    //This function checks if arraylist already contains an object with the same cardNumber. If it doesn't contain the function returns TRUE
+    public boolean checkCardList(ArrayList<Card> aList, String cardNumber) {
+        for (Card card : aList) {
+            if (card.getCardNumber().equals(cardNumber)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 }

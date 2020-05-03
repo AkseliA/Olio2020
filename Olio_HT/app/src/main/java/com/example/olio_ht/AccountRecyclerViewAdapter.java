@@ -59,6 +59,7 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 Intent intent = new Intent(context, AccountSettingsActivity.class);
                 intent.putExtra("account_number", items.get(position).getAccountNumber());
                 intent.putExtra("account_type", type);
+                intent.putExtra("card_number", items.get(position).getCardNumber());
                 context.startActivity(intent);
             }
         });

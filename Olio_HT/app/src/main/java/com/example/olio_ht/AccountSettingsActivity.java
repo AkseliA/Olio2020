@@ -48,7 +48,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     FirebaseUser fbUser;
     DatabaseReference reference, userRef;
     FirebaseDatabase fbDatabase;
-    String type, number;
+    String type, number, currCardNumber;
     InputOutputXml ioXml;
     Context context;
     DateTimeFormatter dtf;
@@ -76,6 +76,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         //retrieve extras from intent
         type = intent.getStringExtra("account_type");
         number = intent.getStringExtra("account_number");
+        currCardNumber = intent.getStringExtra("card_number");
         //Set displayAcctxt
         displayAccTxt.setText(type + ": " + number);
 
@@ -104,7 +105,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //CHECK INPUTS!
                 String credLimit = newCreditLimitTxt.getText().toString();
-                if(credLimit.equals("")){
+                if (credLimit.equals("")) {
                     credLimit = "0";
                 }
                 editAccountSettings(number, credLimit);
@@ -214,7 +215,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         reference.child(account_number).removeValue();
     }
 
-    public void editAccountSettings(String account_number, String creditLimit){
+    public void editAccountSettings(String account_number, String creditLimit) {
         boolean makepayments = transactionSwitch.isChecked();
         boolean hasCard = cardSwitch.isChecked();
         int credLimit = Integer.parseInt(creditLimit);
@@ -222,14 +223,29 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         Map editAcc = new HashMap();
 
+        //if hasCard is ON and there's no card already ->Create a new card
+        if (hasCard && currCardNumber.equals("0")) {
+            CreateCard newCard = new CreateCard();
+            //New cardNumber is based on number of the account.
+            String newCardNmbr = newCard.generateNewCard(account_number);
+            editAcc.put("cardNumber", newCardNmbr);
+        }
+        // If hascard is set off and there's a card already -> deletes the card
+        if(!hasCard && !currCardNumber.equals("0")) {
+            editAcc.put("cardNumber", "0");
+        }
+
+
+
+
         editAcc.put("makePayments", makepayments);
-        editAcc.put("card", hasCard);
-        if(credLimit > 0){
+        //editAcc.put("cardNumber");
+        if (credLimit > 0) {
             editAcc.put("limit", credLimit);
             //New transaction when limit is changed
             String date = dtf.format(now);
             String action = "Credit limit set: " + creditLimit;
-            Transaction newTrans = new Transaction(action,date,"","",account_number);
+            Transaction newTrans = new Transaction(action, date, "", "", account_number);
 
             //Write action to transactions xml
             ioXml.writeTransaction(context, newTrans);

@@ -42,8 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         password_txt = findViewById(R.id.password_txt);
         fbAuth = FirebaseAuth.getInstance();
 
-
-
         fbAuthStateListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

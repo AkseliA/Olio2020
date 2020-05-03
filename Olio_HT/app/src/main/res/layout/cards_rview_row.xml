@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
+    android:id="@+id/accounts_parent_layout"
     android:background="@drawable/background_square">
 
     <TextView
-        android:id="@+id/displayCardType"
-        android:layout_width="390dp"
+        android:id="@+id/displayCard_Type"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
-        android:paddingTop="3dp"
         android:textAppearance="@android:style/TextAppearance.Large"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/displayCardNumber"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12" />
 
     <TextView
-        android:id="@+id/displayCardNumber"
-        android:layout_width="390dp"
+        android:id="@+id/displayCard_Number"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displayCardType" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

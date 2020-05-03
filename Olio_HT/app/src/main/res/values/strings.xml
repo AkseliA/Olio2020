@@ -29,6 +29,8 @@
     <string name="add">Add</string>
     <string name="confirm">Confirm</string>
     <string name="make_a_withdrawal">Make a withdrawal</string>
+    <string name="add_an_account">Add an account</string>
+    <string name="account_number_12digits">Account number (12digits)</string>
 
     <string-array name="account_typeArray">
         <item>Account type</item>
