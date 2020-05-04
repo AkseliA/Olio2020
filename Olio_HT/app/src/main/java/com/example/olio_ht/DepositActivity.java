@@ -1,8 +1,5 @@
 package com.example.olio_ht;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -57,9 +57,9 @@ public class DepositActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int pos = accountsSpnr.getSelectedItemPosition();
-                if (pos == 0){
+                if (pos == 0) {
                     Toast.makeText(DepositActivity.this, "Select the account!", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     makeDeposit();
                     amountToAdd.setText("");
                 }
@@ -139,7 +139,7 @@ public class DepositActivity extends AppCompatActivity {
     }
 
     //Retrieves old balance, and pushes new balance to Firebase. ALSO makes a transaction and writes it to XML.
-    public void editDBAccount(final String account_Number, final double amount){
+    public void editDBAccount(final String account_Number, final double amount) {
         fbDatabase = FirebaseDatabase.getInstance();
         reference = fbDatabase.getReference().child("Accounts").child(account_Number);
 

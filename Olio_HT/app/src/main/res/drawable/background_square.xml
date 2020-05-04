@@ -5,10 +5,10 @@
 
     <solid android:color="#FFFFFF" /> <!-- inside color-->
 
-    <corners android:radius="2dp" /> <!--rouded corner-->
+    <corners android:radius="3dp" /> <!--rouded corner-->
 
     <stroke
         android:width="2dp"
-        android:color="#212121" /> <!--Border color-->
+        android:color="#757575" /> <!--Border color-->
 
 </shape>

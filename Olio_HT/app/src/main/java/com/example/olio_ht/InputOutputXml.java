@@ -2,21 +2,18 @@ package com.example.olio_ht;
 
 import android.content.Context;
 import android.util.Xml;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlSerializer;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,7 +49,7 @@ public class InputOutputXml {
         String result;
 
         //IF XML file already exists, appends the file
-        if (f.exists() && !f.isDirectory()){
+        if (f.exists() && !f.isDirectory()) {
             System.out.println("APPENDING TRANSACTIONS FILE");
 
             try {
@@ -112,7 +109,7 @@ public class InputOutputXml {
                 System.out.println("#################### APPEND SUCCESSFUL ####################");
             }
             //CREATE THE FILE
-        }else{
+        } else {
 
             try {
                 System.out.println("CREATING A NEW XML FILE");
@@ -164,7 +161,6 @@ public class InputOutputXml {
         }
 
 
-
     }
 
     public ArrayList<Transaction> readTransactionXml(Context context, String accNumber) {
@@ -190,7 +186,7 @@ public class InputOutputXml {
                     String accNmbr = element.getElementsByTagName("acc_number").item(0).getTextContent();
 
                     //If the account number matches, creates a transaction object and stores it into an arraylist
-                    if(accNmbr.equals(accNumber)){
+                    if (accNmbr.equals(accNumber)) {
                         Transaction transaction = new Transaction(action, date, amount, balance, accNmbr);
                         transactionArrayList.add(transaction);
                     }

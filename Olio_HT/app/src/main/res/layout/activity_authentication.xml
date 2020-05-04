@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthenticationActivity">
+    tools:context=".AuthenticationActivity"
+    android:background="@color/background">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:padding="5dp"
+
         android:text="Re-enter the following numbers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,60 +25,68 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Authentication"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/cardview_dark_background"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.132" />
+        app:layout_constraintVertical_bias="0.13" />
 
     <TextView
         android:id="@+id/randomNmbrTxt"
         android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_square"
+        android:layout_height="55dp"
+        android:textColor="@color/cardview_dark_background"
+        android:background="@drawable/background_rounded_square"
         android:ems="10"
         android:gravity="center"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.417" />
+        app:layout_constraintVertical_bias="0.440" />
 
     <EditText
         android:id="@+id/authenticationNmbrInput"
         android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_square"
+        android:layout_height="55dp"
+        android:background="@drawable/background_rounded_square"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/xxxxxx"
         android:inputType="number"
+        android:textColor="@color/cardview_dark_background"
+        android:maxLength="6"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:maxLength="6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.555" />
 
     <Button
         android:id="@+id/ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_square"
+        android:background="@drawable/background_rounded_square"
+        android:backgroundTint="@color/cardview_dark_background"
         android:text="Ok"
+        android:textColor="#E0E0E0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.594" />
+        app:layout_constraintVertical_bias="0.661" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

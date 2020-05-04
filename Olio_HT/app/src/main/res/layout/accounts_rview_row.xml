@@ -11,7 +11,8 @@
         android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:textStyle="bold"
+
+        android:textColor="@color/cyanClr"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
@@ -24,7 +25,8 @@
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="bold"
+
+        android:textColor="#98000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
@@ -36,8 +38,9 @@
         android:id="@+id/displayAccountBalance"
         android:layout_width="190dp"
         android:layout_height="23dp"
-        android:textStyle="bold"
+
         android:textSize="16sp"
+        android:textColor="#98000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.049"
@@ -50,7 +53,8 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="bold"
+
+        android:textColor="#98000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.938"

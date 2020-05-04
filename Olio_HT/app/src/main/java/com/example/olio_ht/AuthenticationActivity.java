@@ -1,7 +1,5 @@
 package com.example.olio_ht;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
@@ -38,11 +36,11 @@ public class AuthenticationActivity extends AppCompatActivity {
                 boolean check;
                 check = checkInput(authNmbrInput.getText().toString(), authNmbrText.getText().toString());
 
-                if (!check){
+                if (!check) {
                     setRandomNumber();
                     Toast.makeText(AuthenticationActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
                     authNmbrInput.setText("");
-                }else{
+                } else {
                     Intent intent = new Intent(AuthenticationActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
@@ -51,11 +49,12 @@ public class AuthenticationActivity extends AppCompatActivity {
         });
     }
 
-    public void setRandomNumber(){
+    public void setRandomNumber() {
         int auth = generateRandomAuth();
         authNmbrText.setText(String.valueOf(auth));
     }
-    public int generateRandomAuth(){
+
+    public int generateRandomAuth() {
         int authNmbr = 0;
         //No seed, so the number changes everytime
         Random gen = new Random();
@@ -63,11 +62,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         return authNmbr;
     }
 
-    public boolean checkInput(String input, String wanted){
-        if(input.equals(wanted)) {
-            return true;
-        }else{
-            return false;
-        }
+    public boolean checkInput(String input, String wanted) {
+        return input.equals(wanted);
     }
 }

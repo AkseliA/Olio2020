@@ -8,7 +8,8 @@ public class CreditAccount extends Account {
         this.limit = limit;
     }
 
-    public CreditAccount(){}
+    public CreditAccount() {
+    }
 
     public int getLimit() {
         return limit;
@@ -20,9 +21,9 @@ public class CreditAccount extends Account {
 
     @Override
     public void setBalance(double amount) {
-        if(balance + amount > 0) {
+        if (balance + amount > 0) {
             balance = balance + amount;
-        }else {
+        } else {
             System.out.println("You don't have enough money.");
         }
     }

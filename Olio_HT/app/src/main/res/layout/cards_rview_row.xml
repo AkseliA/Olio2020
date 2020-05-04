@@ -9,9 +9,10 @@
     <TextView
         android:id="@+id/displayCard_Type"
         android:layout_width="255dp"
+        android:textColor="#009faf"
         android:layout_height="wrap_content"
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:textStyle="bold"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
@@ -24,7 +25,6 @@
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"

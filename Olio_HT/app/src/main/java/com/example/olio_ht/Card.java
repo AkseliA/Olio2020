@@ -1,8 +1,8 @@
 package com.example.olio_ht;
 
 public class Card {
-    String cardType;
-    String cardNumber;
+    private String cardType;
+    private String cardNumber;
 
 
     public Card() {

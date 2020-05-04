@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/withdrawItem"
         android:title="@string/make_a_withdrawal"/>
+
     <item android:id="@+id/depositItem"
         android:title="@string/make_a_deposit"/>
+
     <item android:id="@+id/settings"
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/Settings"/>

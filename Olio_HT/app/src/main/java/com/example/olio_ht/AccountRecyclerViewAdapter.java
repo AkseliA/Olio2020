@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 //RecyclerView Onclick method, source: https://www.youtube.com/watch?v=ZXoGG2XTjzU
@@ -44,11 +42,11 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         ((Item) holder).dispType.setText(type);
         ((Item) holder).dispNumber.setText("Account number: " + items.get(position).getAccountNumber());
         ((Item) holder).dispBalance.setText("Balance: " + items.get(position).getBalance() + "€");
-        if(type.equals("Savings account")){
-            ((Item) holder).dispMisc.setText("Interest: " + ((SavingsAccount)(items.get(position))).getInterest() + "%");
+        if (type.equals("Savings account")) {
+            ((Item) holder).dispMisc.setText("Interest: " + ((SavingsAccount) (items.get(position))).getInterest() + "%");
         }
-        if(type.equals("Credit account")){
-            ((Item) holder).dispMisc.setText("Credit limit: " + ((CreditAccount)(items.get(position))).getLimit() + "€");
+        if (type.equals("Credit account")) {
+            ((Item) holder).dispMisc.setText("Credit limit: " + ((CreditAccount) (items.get(position))).getLimit() + "€");
         }
 
         //Onclicklistener to move to account based "settings"
@@ -78,7 +76,6 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         ConstraintLayout parentLayout;
 
 
-
         public Item(View itemView) {
             super(itemView);
             dispType = itemView.findViewById(R.id.displayAccountType);
@@ -86,7 +83,7 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             dispBalance = itemView.findViewById(R.id.displayAccountBalance);
             dispMisc = itemView.findViewById(R.id.displayAccountMisc);
             parentLayout = itemView.findViewById(R.id.accounts_parent_layout);
-            
+
         }
     }
 }
