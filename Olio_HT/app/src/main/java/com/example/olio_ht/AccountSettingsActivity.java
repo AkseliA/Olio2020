@@ -46,6 +46,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     Context context;
     DateTimeFormatter dtf;
     LocalDateTime now;
+    ItemSpacingDecorator itemSpacingDecorator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,6 +255,13 @@ public class AccountSettingsActivity extends AppCompatActivity {
         recyclerLayoutMgr = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerLayoutMgr);
 
+        //Spacing for items (Remove old decoration)
+        if(itemSpacingDecorator != null){
+            recyclerView.removeItemDecoration(itemSpacingDecorator);
+        }else{
+            itemSpacingDecorator = new ItemSpacingDecorator(4);
+            recyclerView.addItemDecoration(itemSpacingDecorator);
+        }
         //Specify adapter for recyclerView
         recyclerView.setAdapter(new TransactionRecyclerViewAdapter(this, transArrList));
     }

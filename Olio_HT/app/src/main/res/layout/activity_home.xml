@@ -41,7 +41,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accountsRecyclerView"
             android:layout_width="400dp"
-            android:layout_height="270dp"
+            android:layout_height="275dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp" />
@@ -49,7 +49,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cardsRecyclerView"
             android:layout_width="400dp"
-            android:layout_height="180dp"
+            android:layout_height="183dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="350dp" />

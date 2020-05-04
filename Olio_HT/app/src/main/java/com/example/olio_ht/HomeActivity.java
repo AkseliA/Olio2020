@@ -39,6 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView welcomeTxt, navHeaderName, navHeaderEmail;
     View header;
     Button addAccBtn;
+    ItemSpacingDecorator accSpacingDecorator, cardSpacingDecorator;
 
 
     @Override
@@ -63,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         fbAuth = FirebaseAuth.getInstance();
+
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -219,7 +221,15 @@ public class HomeActivity extends AppCompatActivity {
         accRecyclerLayoutMgr = new LinearLayoutManager(this);
         accRecyclerView.setLayoutManager(accRecyclerLayoutMgr);
 
-        //Specify adapter for recyclerView
+        //Spacing for items (Remove old decoration)
+        if(accSpacingDecorator != null){
+            accRecyclerView.removeItemDecoration(accSpacingDecorator);
+        }else{
+            accSpacingDecorator = new ItemSpacingDecorator(4);
+            accRecyclerView.addItemDecoration(accSpacingDecorator);
+        }
+        //Specify adapter fo
+        // r recyclerView
         accRecyclerView.setAdapter(new AccountRecyclerViewAdapter(this, accountArrayList));
     }
 
@@ -227,6 +237,14 @@ public class HomeActivity extends AppCompatActivity {
         //Linear layout manager
         cardRecyclerLayoutMgr = new LinearLayoutManager(this);
         cardRecyclerView.setLayoutManager(cardRecyclerLayoutMgr);
+
+        //Spacing for items (Remove old decoration)
+        if(cardSpacingDecorator != null){
+            cardRecyclerView.removeItemDecoration(cardSpacingDecorator);
+        }else{
+            cardSpacingDecorator = new ItemSpacingDecorator(4);
+            cardRecyclerView.addItemDecoration(cardSpacingDecorator);
+        }
 
         //Specify adapter for recyclerView
         cardRecyclerView.setAdapter(new CardRecyclerViewAdapter(this, cardArrayList));
