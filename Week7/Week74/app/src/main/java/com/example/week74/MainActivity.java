@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        outputText = (TextView) findViewById(R.id.textView);
-        inputText = (EditText) findViewById(R.id.editText);
+        outputText = findViewById(R.id.textView);
+        inputText = findViewById(R.id.editText);
         inputText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

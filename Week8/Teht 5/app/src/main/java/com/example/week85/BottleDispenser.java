@@ -12,7 +12,6 @@ public class BottleDispenser {
     private float money;
     private ArrayList<Bottle> BottleList = new ArrayList<Bottle>();
     private ArrayAdapter<Bottle> adapter;
-    private Spinner spinner;
     private Context context;
     private static BottleDispenser bd = null;
     private String receipt;
@@ -74,7 +73,7 @@ public class BottleDispenser {
         if (adapter.getCount() > 0) {
             if (money > BottleList.get(Id).getPrice()) {
                 text.append("KACHUNK! " + BottleList.get(Id).getName() + " came out of the dispenser!\n");
-                receipt = String.format(BottleList.get(Id).getName() + " " + BottleList.get(Id).getManufacturer() + " " + BottleList.get(Id).getSize() + " " + BottleList.get(Id).getPrice() + "€\n");
+                receipt = String.format(BottleList.get(Id).getName() + " Manufacturer: " + BottleList.get(Id).getManufacturer() + " Size: " + BottleList.get(Id).getSize() + " Price: " + BottleList.get(Id).getPrice() + "€\n");
                 money -= BottleList.get(Id).getPrice();
                 BottleList.remove(Id);
                 adapter.notifyDataSetChanged();

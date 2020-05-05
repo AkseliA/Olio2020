@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        outputText = (TextView) findViewById(R.id.textView);
-        inputText = (android.widget.EditText) findViewById(R.id.editText);
+        outputText = findViewById(R.id.textView);
+        inputText = findViewById(R.id.editText);
 
     }
     public void pressButton(View v){
