@@ -72,7 +72,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
         number = intent.getStringExtra("account_number");
         currCardNumber = intent.getStringExtra("card_number");
         //Set displayAcctxt
-        displayAccTxt.setText(type + ": " + number);
+        String textToDisplay = type + ": " + number;
+        displayAccTxt.setText(textToDisplay);
 
         //DATETIME
         dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -118,10 +119,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String accNmbr, cardNmbr;
-                int credLimit;
-                double accBalance, interest;
-                Boolean payments;
                 Account newAccount = null;
                 if (!dataSnapshot.exists()) {
                     Toast.makeText(AccountSettingsActivity.this, "Oops something went wrong!", Toast.LENGTH_SHORT).show();

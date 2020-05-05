@@ -1,3 +1,5 @@
+<!--https://stackoverflow.com/questions/10409871/how-should-i-increase-the-spinner-list-item-font-size -->
+
 <resources>
 
     <!-- Base application theme. -->
@@ -6,6 +8,15 @@
         <item name="colorPrimary">#757575</item>
         <item name="colorPrimaryDark">#494949</item>
         <item name="colorAccent">@color/cyanClr</item>
+        <!-- For the resting Spinner style -->
+        <item name="android:spinnerItemStyle">
+            @style/spinnerItemStyle
+        </item>
+
+        <!-- For each individual Spinner list item once clicked on -->
+        <item name="android:spinnerDropDownItemStyle">
+            @style/spinnerDropDownItemStyle
+        </item>
     </style>
 
     <!-- HomeActivity theme. -->
@@ -14,6 +25,27 @@
         <item name="colorPrimary">#757575</item>
         <item name="colorPrimaryDark">#494949</item>
         <item name="colorAccent">@color/cyanClr</item>
+        <!-- For the resting Spinner style -->
+        <item name="android:spinnerItemStyle">
+            @style/spinnerItemStyle
+        </item>
+
+        <!-- For each individual Spinner list item once clicked on -->
+        <item name="android:spinnerDropDownItemStyle">
+            @style/spinnerDropDownItemStyle
+        </item>
+    </style>
+
+    <style name="spinnerItemStyle">
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/cardview_dark_background</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle">
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/cardview_dark_background</item>
     </style>
 
 </resources>

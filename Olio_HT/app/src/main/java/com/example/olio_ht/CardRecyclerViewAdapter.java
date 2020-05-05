@@ -26,8 +26,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View row = inflater.inflate(R.layout.cards_rview_row, parent, false);
-        Item item = new Item(row);
-        return item;
+        return new Item(row);
     }
 
 
@@ -43,7 +42,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return items.size();
     }
 
-    public class Item extends RecyclerView.ViewHolder {
+    public static class Item extends RecyclerView.ViewHolder {
         TextView dispCard;
         TextView dispType;
 

@@ -82,6 +82,9 @@ public class HomeActivity extends AppCompatActivity {
                 if (id == R.id.depositItem) {
                     startActivity(new Intent(HomeActivity.this, DepositActivity.class));
                 }
+                if(id == R.id.transferItem){
+                    startActivity(new Intent(HomeActivity.this, TransferActivity.class));
+                }
                 return true;
             }
         });
@@ -95,7 +98,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 welcomeTxt.setText(String.format("%s %s!", getResources().getString(R.string.Welcome), user.getFirst_name()));
-                navHeaderName.setText(user.getFirst_name() + " " + user.getLast_name());
+                String headerFullName = user.getFirst_name() + " " + user.getLast_name();
+                navHeaderName.setText(headerFullName);
                 navHeaderEmail.setText(user.getEmail());
 
 
@@ -269,6 +273,4 @@ public class HomeActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
 }

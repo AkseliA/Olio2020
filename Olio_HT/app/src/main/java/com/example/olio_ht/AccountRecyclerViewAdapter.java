@@ -30,8 +30,7 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View row = inflater.inflate(R.layout.accounts_rview_row, parent, false);
-        Item item = new Item(row);
-        return item;
+        return new Item(row);
     }
 
     @SuppressLint("SetTextI18n")
@@ -68,7 +67,7 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return items.size();
     }
 
-    public class Item extends RecyclerView.ViewHolder {
+    public static class Item extends RecyclerView.ViewHolder {
         TextView dispType;
         TextView dispNumber;
         TextView dispBalance;

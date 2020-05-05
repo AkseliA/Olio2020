@@ -52,7 +52,7 @@ public class DepositActivity extends AppCompatActivity {
         //To populate spinner with accounts must retrieve user's data from firebaseDb.
         retrieveUserFromDb();
 
-        //Onclicklistener vor addMoney button
+        //Onclicklistener for addMoney button
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,12 +129,18 @@ public class DepositActivity extends AppCompatActivity {
             Toast.makeText(DepositActivity.this, "Amount must be in numbers!", Toast.LENGTH_SHORT).show();
         }
 
-        //Retrieve account number from spinner item
-        String spinnerItem = accountsSpnr.getSelectedItem().toString();
-        String[] parts = spinnerItem.split(": ");
-        String accountNumber = parts[1];
+        //Amount must be 0
+        if(amount > 0){
+            //Retrieve account number from spinner item
+            String spinnerItem = accountsSpnr.getSelectedItem().toString();
+            String[] parts = spinnerItem.split(": ");
+            String accountNumber = parts[1];
 
-        editDBAccount(accountNumber, amount);
+            editDBAccount(accountNumber, amount);
+        }else{
+            Toast.makeText(DepositActivity.this, "Amount can not be 0!", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 

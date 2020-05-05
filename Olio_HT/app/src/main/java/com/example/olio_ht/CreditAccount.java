@@ -21,7 +21,7 @@ public class CreditAccount extends Account {
 
     @Override
     public void setBalance(double amount) {
-        if (balance + amount > 0) {
+        if (balance + amount >= -limit) {
             balance = balance + amount;
         } else {
             System.out.println("You don't have enough money.");

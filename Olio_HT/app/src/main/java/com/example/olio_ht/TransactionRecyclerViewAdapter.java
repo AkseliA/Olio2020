@@ -26,21 +26,23 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View row = inflater.inflate(R.layout.transactions_rview_row, parent, false);
-        Item item = new Item(row);
-        return item;
+        return new Item(row);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        String date = "Date: " + items.get(position).getDate();
+        String amount = "Amount: " + items.get(position).getAmount() + "€";
         //SET STUFFF
         ((Item) holder).dispTrans.setText(items.get(position).getAction());
-        ((Item) holder).dispDate.setText("Date: " + items.get(position).getDate());
+        ((Item) holder).dispDate.setText(date);
         if (!items.get(position).getAmount().isEmpty()) {
-            ((Item) holder).dispAmount.setText("Amount: " + items.get(position).getAmount() + "€");
+            ((Item) holder).dispAmount.setText(amount);
         }
         if (!items.get(position).getBalance().isEmpty()) {
-            ((Item) holder).dispBalance.setText("Balance: " + items.get(position).getBalance() + "€");
+            String balance = "Balance: " + items.get(position).getBalance() + "€";
+            ((Item) holder).dispBalance.setText(balance);
         }
     }
 
@@ -49,7 +51,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         return items.size();
     }
 
-    public class Item extends RecyclerView.ViewHolder {
+    public static class Item extends RecyclerView.ViewHolder {
         TextView dispTrans;
         TextView dispDate;
         TextView dispAmount;
@@ -62,8 +64,6 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             dispDate = itemView.findViewById(R.id.displayDate);
             dispAmount = itemView.findViewById(R.id.displayAmount);
             dispBalance = itemView.findViewById(R.id.displayBalance);
-
-
         }
     }
 }
