@@ -8,14 +8,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -128,6 +131,7 @@ public class TransferActivity extends AppCompatActivity {
         transferFromAccount(accountNumberFrom, typeFrom, typeTo, accountNumberTo, amount);
     }
 
+    //First checks if "from" account payments are turned on. After that
     //Checks if "From" account has balance for the transfer. If it does proceeds to function which adds money "To" account.
     //Function also pushes new balance to database
     public void transferFromAccount(final String account_Number_From, final String typeFrom, final String typeTo, final String account_Number_To, final double amount) {
@@ -141,9 +145,26 @@ public class TransferActivity extends AppCompatActivity {
                 double oldBalance = Double.parseDouble(dataSnapshot.child("balance").getValue().toString());
                 double newBalance = oldBalance - amount;
                 String action = "Transfer to " + typeTo;
-                //If creditAccount
-                if (typeFrom.equals("Credit account")) {
-                    if (newBalance <= Integer.parseInt(dataSnapshot.child("limit").getValue().toString())) {
+
+                boolean payments = Boolean.parseBoolean(dataSnapshot.child("makePayments").getValue().toString());
+                if (payments) {
+                    //If creditAccount
+                    if (typeFrom.equals("Credit account")) {
+                        if (newBalance <= Integer.parseInt(dataSnapshot.child("limit").getValue().toString())) {
+                            Map updateAcc = new HashMap();
+                            updateAcc.put("balance", newBalance);
+                            referenceFrom.updateChildren(updateAcc);
+                            transferToAccount(account_Number_To, typeFrom, amount);
+
+                            //create transaction and save it to XML
+                            createTransaction(action, amount, newBalance, account_Number_From);
+
+                        } else {
+                            Toast.makeText(TransferActivity.this, "Credit limit exceeded!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        //If "normal" account
+                    } else if (oldBalance - amount >= 0) {
                         Map updateAcc = new HashMap();
                         updateAcc.put("balance", newBalance);
                         referenceFrom.updateChildren(updateAcc);
@@ -151,23 +172,13 @@ public class TransferActivity extends AppCompatActivity {
 
                         //create transaction and save it to XML
                         createTransaction(action, amount, newBalance, account_Number_From);
-
                     } else {
-                        Toast.makeText(TransferActivity.this, "Credit limit exceeded!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TransferActivity.this, "You don't have enough money!", Toast.LENGTH_SHORT).show();
                     }
-
-                    //If "normal" account
-                } else if (oldBalance - amount >= 0) {
-                    Map updateAcc = new HashMap();
-                    updateAcc.put("balance", newBalance);
-                    referenceFrom.updateChildren(updateAcc);
-                    transferToAccount(account_Number_To, typeFrom, amount);
-
-                    //create transaction and save it to XML
-                    createTransaction(action, amount, newBalance, account_Number_From);
-                } else {
-                    Toast.makeText(TransferActivity.this, "You don't have enough money.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(TransferActivity.this, "Adjust your payment settings!", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
@@ -209,7 +220,7 @@ public class TransferActivity extends AppCompatActivity {
     }
 
     //Creates new transcation object and writes it to an Xml
-    public void createTransaction(String action, Double amount, Double newbalance, String account_Number){
+    public void createTransaction(String action, Double amount, Double newBalance, String account_Number) {
         //required info
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
@@ -217,7 +228,7 @@ public class TransferActivity extends AppCompatActivity {
 
         context = getApplicationContext();
         //New transaction
-        newTransaction = new Transaction(action, date, Double.toString(amount), Double.toString(newbalance), account_Number);
+        newTransaction = new Transaction(action, date, Double.toString(amount), Double.toString(newBalance), account_Number);
         ioXml = new InputOutputXml();
         ioXml.writeTransaction(context, newTransaction);
     }
