@@ -69,6 +69,7 @@ public class DepositActivity extends AppCompatActivity {
 
     }
 
+    //Gets users accounts from database and populates spinner with them.
     public void retrieveUserFromDb() {
 
         //Arraylist for spinner adapter
@@ -125,23 +126,21 @@ public class DepositActivity extends AppCompatActivity {
         //Try to parse it into double
         try {
             amount = Double.parseDouble(textAmount);
+            //Amount must be 0
+            if (amount > 0) {
+                //Retrieve account number from spinner item
+                String spinnerItem = accountsSpnr.getSelectedItem().toString();
+                String[] parts = spinnerItem.split(": ");
+                String accountNumber = parts[1];
+
+                editDBAccount(accountNumber, amount);
+            } else {
+                Toast.makeText(DepositActivity.this, "Amount can not be 0!", Toast.LENGTH_SHORT).show();
+            }
+
         } catch (NumberFormatException e) {
             Toast.makeText(DepositActivity.this, "Amount must be in numbers!", Toast.LENGTH_SHORT).show();
         }
-
-        //Amount must be 0
-        if(amount > 0){
-            //Retrieve account number from spinner item
-            String spinnerItem = accountsSpnr.getSelectedItem().toString();
-            String[] parts = spinnerItem.split(": ");
-            String accountNumber = parts[1];
-
-            editDBAccount(accountNumber, amount);
-        }else{
-            Toast.makeText(DepositActivity.this, "Amount can not be 0!", Toast.LENGTH_SHORT).show();
-        }
-
-
     }
 
     //Retrieves old balance, and pushes new balance to Firebase. ALSO makes a transaction and writes it to XML.
@@ -152,6 +151,9 @@ public class DepositActivity extends AppCompatActivity {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String[] parts = accountsSpnr.getSelectedItem().toString().split(": ");
+                String to = parts[0];
+
                 //get old balance
                 double oldBalance = Double.parseDouble(dataSnapshot.child("balance").getValue().toString());
                 double newbalance = oldBalance + amount;
@@ -165,17 +167,10 @@ public class DepositActivity extends AppCompatActivity {
                 Toast.makeText(DepositActivity.this, "New balance: " + newbalance + "€", Toast.LENGTH_SHORT).show();
 
 
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDateTime now = LocalDateTime.now();
-                String date = dtf.format(now);
-                String[] parts = accountsSpnr.getSelectedItem().toString().split(": ");
-                String to = parts[0];
-                context = getApplicationContext();
+
                 //New transaction
                 String action = "Deposit to " + to;
-                newTransaction = new Transaction(action, date, Double.toString(amount), Double.toString(newbalance), account_Number);
-                ioXml = new InputOutputXml();
-                ioXml.writeTransaction(context, newTransaction);
+                createTransaction(action, amount, newbalance, account_Number);
             }
 
             @Override
@@ -184,5 +179,19 @@ public class DepositActivity extends AppCompatActivity {
             }
         };
         reference.addListenerForSingleValueEvent(eventListener);
+    }
+
+    //Creates new transcation object and writes it to an Xml
+    public void createTransaction(String action, Double amount, Double newBalance, String account_Number) {
+        //required info
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        String date = dtf.format(now);
+
+        context = getApplicationContext();
+        //New transaction
+        newTransaction = new Transaction(action, date, Double.toString(amount), Double.toString(newBalance), account_Number);
+        ioXml = new InputOutputXml();
+        ioXml.writeTransaction(context, newTransaction);
     }
 }
