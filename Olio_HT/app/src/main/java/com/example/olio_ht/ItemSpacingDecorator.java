@@ -4,6 +4,8 @@ import android.graphics.Rect;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+//This is used to create spacing between reyclerview rows.
 //Source: https://www.youtube.com/watch?v=AtzJUDvRktI
 public class ItemSpacingDecorator extends RecyclerView.ItemDecoration {
 

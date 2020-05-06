@@ -22,6 +22,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
+        //Initialize
         authNmbrText = findViewById(R.id.randomNmbrTxt);
         okBtn = findViewById(R.id.ok_button);
         authNmbrInput = findViewById(R.id.authenticationNmbrInput);

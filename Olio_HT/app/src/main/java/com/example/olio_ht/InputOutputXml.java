@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -29,16 +30,14 @@ import javax.xml.transform.stream.StreamResult;
 
 public class InputOutputXml {
     private ArrayList<Transaction> transactionArrayList;
-    Transaction newTrans;
     String fileName;
 
     public InputOutputXml() {
         transactionArrayList = new ArrayList<Transaction>();
         fileName = "transactions.xml";
-
     }
 
-
+    //Creates xml file and writes transaction or appends it, if file doesn't exist.
     public void writeTransaction(Context context, Transaction addTrans) {
         String fPath = context.getFilesDir().getPath() + "/" + fileName;
         File f = new File(fPath);
@@ -103,11 +102,14 @@ public class InputOutputXml {
                 e.printStackTrace();
             } catch (SAXException e) {
                 e.printStackTrace();
+            } catch (TransformerConfigurationException e) {
+                e.printStackTrace();
             } catch (TransformerException e) {
                 e.printStackTrace();
             } finally {
                 System.out.println("#################### APPEND SUCCESSFUL ####################");
             }
+
             //CREATE THE FILE
         } else {
 
@@ -159,10 +161,9 @@ public class InputOutputXml {
                 System.out.println("#################### DONE ####################");
             }
         }
-
-
     }
 
+    //This reads the transaction xml file, filters it by the account number and returns an arrayList, which contains transactions of that account number
     public ArrayList<Transaction> readTransactionXml(Context context, String accNumber) {
         try {
             transactionArrayList.clear();

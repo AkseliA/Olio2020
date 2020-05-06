@@ -47,10 +47,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        //Initialize components
         navigationView = findViewById(R.id.nav_view);
         header = navigationView.getHeaderView(0);
-
         accRecyclerView = findViewById(R.id.accountsRecyclerView);
         cardRecyclerView = findViewById(R.id.cardsRecyclerView);
         addAccBtn = findViewById(R.id.addAccBtn);
@@ -62,27 +61,23 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         fbAuth = FirebaseAuth.getInstance();
 
-
-
+        //Navigation drawer onItemSelectedListener
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                //LOGOUT
                 if (id == R.id.logout) {
                     signOut();
                 }
-                //SETTINGS
                 if (id == R.id.settings) {
                     startActivity(new Intent(HomeActivity.this, UserSettingsActivity.class));
                 }
                 if (id == R.id.depositItem) {
                     startActivity(new Intent(HomeActivity.this, DepositActivity.class));
                 }
-                if(id == R.id.transferItem){
+                if (id == R.id.transferItem) {
                     startActivity(new Intent(HomeActivity.this, TransferActivity.class));
                 }
                 return true;
@@ -90,32 +85,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        String userId = fbAuth.getUid();
-        fbDatabase = FirebaseDatabase.getInstance();
-        reference = fbDatabase.getReference().child("Users").child(userId);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                welcomeTxt.setText(String.format("%s %s!", getResources().getString(R.string.Welcome), user.getFirst_name()));
-                String headerFullName = user.getFirst_name() + " " + user.getLast_name();
-                navHeaderName.setText(headerFullName);
-                navHeaderEmail.setText(user.getEmail());
-
-
-                //fetch accounts if user has opened accounts
-                String creditAccNmbr = user.getCredit_account();
-                String debitAccNmbr = user.getDebit_account();
-                String savingsAccNmbr = user.getSavings_account();
-                fetchUsersAccounts(creditAccNmbr, debitAccNmbr, savingsAccNmbr);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(HomeActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        getUserInfo();
 
         addAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +104,34 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Gets user info from firebase database. If user has opened accounts it will call function "fetchUserAccounts".
+    public void getUserInfo(){
+        String userId = fbAuth.getUid();
+        fbDatabase = FirebaseDatabase.getInstance();
+        reference = fbDatabase.getReference().child("Users").child(userId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                welcomeTxt.setText(String.format("%s %s!", getResources().getString(R.string.Welcome), user.getFirst_name()));
+                String headerFullName = user.getFirst_name() + " " + user.getLast_name();
+                navHeaderName.setText(headerFullName);
+                navHeaderEmail.setText(user.getEmail());
+
+                //fetch accounts if user has opened accounts
+                String creditAccNmbr = user.getCredit_account();
+                String debitAccNmbr = user.getDebit_account();
+                String savingsAccNmbr = user.getSavings_account();
+                fetchUsersAccounts(creditAccNmbr, debitAccNmbr, savingsAccNmbr);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(HomeActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
         finish();
@@ -142,7 +140,6 @@ public class HomeActivity extends AppCompatActivity {
 
     //This function gets user's accounts and cards from the firebase database and creates arraylists to display them using recyclerview
     public void fetchUsersAccounts(final String creditAccNmbr, final String debitAccNmbr, final String savingsAccNmbr) {
-        String userId = fbAuth.getUid();
         fbDatabase = FirebaseDatabase.getInstance();
         reference = fbDatabase.getReference().child("Accounts");
         reference.addValueEventListener(new ValueEventListener() {
@@ -220,32 +217,33 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    //This function sets Linear layout manager and spacing decorator for Accounts. Also creates an adapter for recyclerview based on accountArraylist and sets it.
     public void displayAccounts(ArrayList<Account> accountArrayList) {
         //Linear layout manager
         accRecyclerLayoutMgr = new LinearLayoutManager(this);
         accRecyclerView.setLayoutManager(accRecyclerLayoutMgr);
 
         //Spacing for items (Remove old decoration)
-        if(accSpacingDecorator != null){
+        if (accSpacingDecorator != null) {
             accRecyclerView.removeItemDecoration(accSpacingDecorator);
-        }else{
+        } else {
             accSpacingDecorator = new ItemSpacingDecorator(4);
             accRecyclerView.addItemDecoration(accSpacingDecorator);
         }
-        //Specify adapter fo
-        // r recyclerView
+        //Specify adapter for recyclerView
         accRecyclerView.setAdapter(new AccountRecyclerViewAdapter(this, accountArrayList));
     }
 
+    //This function sets Linear layout manager and spacing decorator for Cards. Also creates an adapter for recyclerview based on cardArraylist and sets it.
     public void displayCards(ArrayList<Card> cardArrayList) {
         //Linear layout manager
         cardRecyclerLayoutMgr = new LinearLayoutManager(this);
         cardRecyclerView.setLayoutManager(cardRecyclerLayoutMgr);
 
         //Spacing for items (Remove old decoration)
-        if(cardSpacingDecorator != null){
+        if (cardSpacingDecorator != null) {
             cardRecyclerView.removeItemDecoration(cardSpacingDecorator);
-        }else{
+        } else {
             cardSpacingDecorator = new ItemSpacingDecorator(4);
             cardRecyclerView.addItemDecoration(cardSpacingDecorator);
         }

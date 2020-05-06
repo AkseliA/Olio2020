@@ -35,6 +35,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_settings);
 
+        //Initialize
         currName = findViewById(R.id.currUsername_txt);
         currSurname = findViewById(R.id.currSurname_txt);
         currAddress = findViewById(R.id.currAddress_txt);
@@ -49,6 +50,25 @@ public class UserSettingsActivity extends AppCompatActivity {
         fbAuth = FirebaseAuth.getInstance();
         fbDatabase = FirebaseDatabase.getInstance();
 
+        getUserInformation();
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editUserInformation();
+            }
+        });
+
+        changePwBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeUserPassword();
+            }
+        });
+    }
+
+    //gets user information from firebase database and fills user info on editTexts.
+    public void getUserInformation(){
         String userId = fbAuth.getUid();
         reference = fbDatabase.getReference().child("Users").child(userId);
         reference.addValueEventListener(new ValueEventListener() {
@@ -67,22 +87,9 @@ public class UserSettingsActivity extends AppCompatActivity {
                 Toast.makeText(UserSettingsActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editUserInformation();
-            }
-        });
-
-        changePwBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeUserPassword();
-            }
-        });
     }
 
+    //On button press gets new values from edittexts and pushes to firebase.
     public void editUserInformation() {
         String newName = currName.getText().toString();
         String newSurname = currSurname.getText().toString();
@@ -90,21 +97,36 @@ public class UserSettingsActivity extends AppCompatActivity {
         String newAddress = currAddress.getText().toString();
         String newPhone = currPhone.getText().toString();
 
-        //Update dbUser
+        //Update dbUser if fields are not empty
         String userId = fbAuth.getUid();
         reference = fbDatabase.getReference().child("Users").child(userId);
         Map updateAcc = new HashMap();
-        updateAcc.put("address", newAddress);
-        updateAcc.put("email", newEmail);
-        updateAcc.put("first_name", newName);
-        updateAcc.put("last_name", newSurname);
-        updateAcc.put("phone", newPhone);
-        reference.updateChildren(updateAcc);
+        if(!newAddress.isEmpty()){
+            updateAcc.put("address", newAddress);
+        }
+        if(!newEmail.isEmpty()){
+            updateAcc.put("email", newEmail);
+            fbUser.updateEmail(newEmail);
+        }
+        if(!newName.isEmpty()){
+            updateAcc.put("first_name", newName);
+        }
+        if(!newSurname.isEmpty()){
+            updateAcc.put("last_name", newSurname);
+        }
+        if(!newPhone.isEmpty()){
+            updateAcc.put("phone", newPhone);
+        }
 
-        fbUser.updateEmail(newEmail);
+        //if updateAcc is not empty
+        if(!updateAcc.isEmpty()){
+            reference.updateChildren(updateAcc);
+
+        }
         finish();
     }
 
+    //Function for changing user password in firebase
     public void changeUserPassword() {
         String newPassword1 = newPw1.getText().toString();
         String newPassword2 = newPw2.getText().toString();

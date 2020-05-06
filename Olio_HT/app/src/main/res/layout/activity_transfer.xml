@@ -24,6 +24,7 @@
         android:id="@+id/accountsFrom_Spnr2"
         android:layout_width="390dp"
         android:layout_height="55dp"
+
         android:background="@drawable/background_rounded_square"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +40,7 @@
         android:background="@drawable/background_rounded_square"
         android:ems="10"
         android:hint="Amount to transfer"
-        android:inputType="text"
+        android:inputType="numberDecimal"
         android:padding="8dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

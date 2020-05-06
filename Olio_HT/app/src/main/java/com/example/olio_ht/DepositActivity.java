@@ -122,25 +122,25 @@ public class DepositActivity extends AppCompatActivity {
     public void makeDeposit() {
         //Retrieve amount from edittext
         String textAmount = amountToAdd.getText().toString();
-        double amount = 0;
-        //Try to parse it into double
-        try {
-            amount = Double.parseDouble(textAmount);
-            //Amount must be 0
-            if (amount > 0) {
-                //Retrieve account number from spinner item
-                String spinnerItem = accountsSpnr.getSelectedItem().toString();
-                String[] parts = spinnerItem.split(": ");
-                String accountNumber = parts[1];
 
-                editDBAccount(accountNumber, amount);
-            } else {
-                Toast.makeText(DepositActivity.this, "Amount can not be 0!", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (NumberFormatException e) {
-            Toast.makeText(DepositActivity.this, "Amount must be in numbers!", Toast.LENGTH_SHORT).show();
+        if(textAmount.equals("")){
+            textAmount = "0";
         }
+        double amount = 0;
+        //Parse string amount into double
+        amount = Double.parseDouble(textAmount);
+        //Amount must be 0
+        if (amount > 0) {
+            //Retrieve account number from spinner item
+            String spinnerItem = accountsSpnr.getSelectedItem().toString();
+            String[] parts = spinnerItem.split(": ");
+            String accountNumber = parts[1];
+
+            editDBAccount(accountNumber, amount);
+        } else {
+            Toast.makeText(DepositActivity.this, "Amount can not be 0!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //Retrieves old balance, and pushes new balance to Firebase. ALSO makes a transaction and writes it to XML.
@@ -167,7 +167,6 @@ public class DepositActivity extends AppCompatActivity {
                 Toast.makeText(DepositActivity.this, "New balance: " + newbalance + "€", Toast.LENGTH_SHORT).show();
 
 
-
                 //New transaction
                 String action = "Deposit to " + to;
                 createTransaction(action, amount, newbalance, account_Number);
@@ -181,7 +180,7 @@ public class DepositActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(eventListener);
     }
 
-    //Creates new transcation object and writes it to an Xml
+    //Creates new transaction object and writes it to an Xml
     public void createTransaction(String action, Double amount, Double newBalance, String account_Number) {
         //required info
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");

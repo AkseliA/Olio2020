@@ -61,6 +61,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         confirmBtn = findViewById(R.id.confirm_btn);
         newCreditLimitTxt = findViewById(R.id.newCredit_limit_txt);
         recyclerView = findViewById(R.id.transaction_recyclerView);
+
         intent = getIntent();
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         fbAuth = FirebaseAuth.getInstance();
@@ -85,7 +86,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         //Display transactions
         displayTransactions();
 
-
         //DeleteAcc button onClickListener
         deleteAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +98,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //CHECK INPUTS!
                 String credLimit = newCreditLimitTxt.getText().toString();
                 if (credLimit.equals("")) {
                     credLimit = "0";
@@ -107,10 +106,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
-
 
     //Loads account information and launches method to set switches correctly.
     public void loadAccountInfo(String accNmbr, final String type) {
@@ -207,7 +203,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     public void editAccountSettings(String account_number, String creditLimit) {
-        boolean makepayments = transactionSwitch.isChecked();
+        boolean makePayments = transactionSwitch.isChecked();
         boolean hasCard = cardSwitch.isChecked();
         int credLimit = Integer.parseInt(creditLimit);
         reference = fbDatabase.getReference().child("Accounts").child(account_number);
@@ -227,7 +223,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         }
 
 
-        editAcc.put("makePayments", makepayments);
+        editAcc.put("makePayments", makePayments);
         //editAcc.put("cardNumber");
         if (credLimit > 0) {
             editAcc.put("limit", credLimit);
@@ -238,7 +234,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
             //Write action to transactions xml
             ioXml.writeTransaction(context, newTrans);
-
         }
         reference.updateChildren(editAcc);
     }
@@ -252,7 +247,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         recyclerLayoutMgr = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerLayoutMgr);
 
-        //Spacing for items (Remove old decoration)
+        //Spacing for items (Remove old decoration if there is one already)
         if(itemSpacingDecorator != null){
             recyclerView.removeItemDecoration(itemSpacingDecorator);
         }else{

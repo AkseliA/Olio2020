@@ -10,14 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -39,7 +42,6 @@ public class AddAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_account);
-
 
         accTypeSpnr = findViewById(R.id.accType_Snpr);
         accNmbrTxt = findViewById(R.id.accNmbr_txt);
@@ -69,6 +71,7 @@ public class AddAccountActivity extends AppCompatActivity {
                     creditLimitTxt.setVisibility(View.INVISIBLE);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -77,36 +80,49 @@ public class AddAccountActivity extends AppCompatActivity {
         createAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (accNmbrTxt.getText().toString().length() == 12) {
+                if (accTypeSpnr.getSelectedItemPosition() == 0) {
+                    Toast.makeText(AddAccountActivity.this, "Select an account type.", Toast.LENGTH_SHORT).show();
+                }
+                else if (accNmbrTxt.getText().toString().length() == 12) {
                     compareAllAccNmbrs();
                 } else {
                     Toast.makeText(AddAccountActivity.this, "Account number must be 12 digits!", Toast.LENGTH_SHORT).show();
+                    accNmbrTxt.setError("Enter valid account number!");
                 }
-
             }
         });
 
     }
 
+    //Sets account spinner to display account types.
     public void setAccTypeSpnr() {
         ArrayAdapter accTypeAdapter = ArrayAdapter.createFromResource(this, R.array.account_typeArray, android.R.layout.simple_spinner_item);
         accTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accTypeSpnr.setAdapter(accTypeAdapter);
     }
 
+    //Creates an object of type Account and pushes to database
     public void createAccount() {
         String type = "";
         final String accNmbr;
+        String startingBalanceTxt;
         double startingBalance;
         int credLimit = 0;
         Account newAcc = null;
         accNmbr = accNmbrTxt.getText().toString();
-        startingBalance = Double.parseDouble(startingbalanceTxt.getText().toString());
+        startingBalanceTxt = startingbalanceTxt.getText().toString();
+
+        if(startingBalanceTxt.isEmpty()){
+            startingBalance = 0;
+        }else {
+            startingBalance = Double.parseDouble(startingBalanceTxt);
+        }
 
         //NOTE: By default boolean makepayments set to false, cardnumber to 0 AND interest is 1.8(%)!
         if (!creditLimitTxt.getText().toString().equals("")) {
             credLimit = Integer.parseInt(creditLimitTxt.getText().toString());
         }
+
         if (accTypeSpnr.getSelectedItemPosition() == 1) {
             type = "credit_account";
             newAcc = new CreditAccount(accNmbr, startingBalance, "0", false, credLimit);
@@ -116,7 +132,6 @@ public class AddAccountActivity extends AppCompatActivity {
         } else if (accTypeSpnr.getSelectedItemPosition() == 3) {
             type = "savings_account";
             newAcc = new SavingsAccount(accNmbr, startingBalance, "0", false, 1.8);
-
         }
 
 
@@ -140,7 +155,6 @@ public class AddAccountActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     //Function to compare if account number is already used
     public void compareAllAccNmbrs() {
         final String accNmbr = accNmbrTxt.getText().toString();
@@ -151,7 +165,7 @@ public class AddAccountActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //There is no matches
                 if (!dataSnapshot.exists()) {
-                    compareUserAccounts(accNmbr);
+                    compareUserAccounts();
                 } else {
                     Toast.makeText(AddAccountActivity.this, "Account with that number already exists!", Toast.LENGTH_SHORT).show();
                 }
@@ -166,7 +180,7 @@ public class AddAccountActivity extends AppCompatActivity {
     }
 
     //Function to compare is user already has an account of that type.
-    public void compareUserAccounts(String accNmbr) {
+    public void compareUserAccounts() {
         String type = getType();
         String userId = fbAuth.getUid();
         UIDref = fbDatabase.getReference().child("Users").child(userId).child(type);
@@ -190,6 +204,7 @@ public class AddAccountActivity extends AppCompatActivity {
         UIDref.addListenerForSingleValueEvent(eventListener);
     }
 
+    //Returns account type based on account type spinner selected item position
     public String getType() {
         String type = "";
         if (accTypeSpnr.getSelectedItemPosition() == 1) {

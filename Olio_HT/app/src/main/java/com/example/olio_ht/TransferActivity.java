@@ -58,13 +58,24 @@ public class TransferActivity extends AppCompatActivity {
         transferBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //VIRHEENKÄSITTELY
-                double amount = Double.parseDouble(amountToAddTxt.getText().toString());
-                makeTransfer(amount);
+                String amountTxt = amountToAddTxt.getText().toString();
+                double amount;
+                if(fromAccSpnr.getSelectedItem().toString().equals(toAccSpnr.getSelectedItem().toString())){
+                    Toast.makeText(TransferActivity.this, "Transfer not possible!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(amountTxt.isEmpty()){
+                        amount = 0;
+                    }else{
+                        amount = Double.parseDouble(amountTxt);
+                    }
+                    makeTransfer(amount);
+                }
             }
         });
 
     }
+
 
     //Retreives users accounts to display them on spinners.
     public void retrieveUserFromDb() {
@@ -116,19 +127,24 @@ public class TransferActivity extends AppCompatActivity {
         toAccSpnr.setAdapter(accTypeAdapter);
     }
 
+
     public void makeTransfer(double amount) {
         //Retrieve account numbers from spinner items
-        String accountTo = toAccSpnr.getSelectedItem().toString();
-        String[] partsT = accountTo.split(": ");
-        String accountNumberTo = partsT[1];
-        String typeTo = partsT[0];
+        if(amount <= 0){
+            Toast.makeText(TransferActivity.this, "Transfer amount must be more than 0!", Toast.LENGTH_SHORT).show();
+        }else{
+            String accountTo = toAccSpnr.getSelectedItem().toString();
+            String[] partsT = accountTo.split(": ");
+            String accountNumberTo = partsT[1];
+            String typeTo = partsT[0];
 
-        String accountFrom = fromAccSpnr.getSelectedItem().toString();
-        String[] partsF = accountFrom.split(": ");
-        String typeFrom = partsF[0];
-        String accountNumberFrom = partsF[1];
+            String accountFrom = fromAccSpnr.getSelectedItem().toString();
+            String[] partsF = accountFrom.split(": ");
+            String typeFrom = partsF[0];
+            String accountNumberFrom = partsF[1];
 
-        transferFromAccount(accountNumberFrom, typeFrom, typeTo, accountNumberTo, amount);
+            transferFromAccount(accountNumberFrom, typeFrom, typeTo, accountNumberTo, amount);
+        }
     }
 
     //First checks if "from" account payments are turned on. After that
@@ -150,12 +166,13 @@ public class TransferActivity extends AppCompatActivity {
                 if (payments) {
                     //If creditAccount
                     if (typeFrom.equals("Credit account")) {
-                        if (newBalance <= Integer.parseInt(dataSnapshot.child("limit").getValue().toString())) {
+
+                        if (newBalance >= - Integer.parseInt(dataSnapshot.child("limit").getValue().toString())) {
                             Map updateAcc = new HashMap();
                             updateAcc.put("balance", newBalance);
                             referenceFrom.updateChildren(updateAcc);
-                            transferToAccount(account_Number_To, typeFrom, amount);
 
+                            transferToAccount(account_Number_To, typeFrom, amount);
                             //create transaction and save it to XML
                             createTransaction(action, amount, newBalance, account_Number_From);
 
@@ -189,6 +206,7 @@ public class TransferActivity extends AppCompatActivity {
         referenceFrom.addListenerForSingleValueEvent(eventListener);
     }
 
+    //Updates balance of receiving account in firebase database.
     public void transferToAccount(final String account_Number_To, final String typeFrom, final double amount) {
         fbDatabase = FirebaseDatabase.getInstance();
         referenceTo = fbDatabase.getReference().child("Accounts").child(account_Number_To);

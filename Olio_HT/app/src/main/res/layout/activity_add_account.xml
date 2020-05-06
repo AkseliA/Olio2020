@@ -27,6 +27,7 @@
         android:layout_width="390dp"
         android:layout_height="55dp"
         android:textSize="20sp"
+        android:background="@drawable/background_rounded_square"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,14 +36,13 @@
 
     <EditText
         android:id="@+id/accNmbr_txt"
-
+        android:inputType="number"
         android:layout_width="390dp"
         android:layout_height="55dp"
         android:textSize="20sp"
         android:background="@drawable/background_rounded_square"
         android:ems="10"
         android:hint="@string/account_number_12digits"
-        android:inputType="text"
         android:maxLength="12"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintVertical_bias="0.40" />
 
     <EditText
         android:id="@+id/setBalance_txt"
@@ -60,14 +60,14 @@
         android:background="@drawable/background_rounded_square"
         android:ems="10"
         android:hint="@string/starting_balance"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/creditLimit_txt"
@@ -77,14 +77,14 @@
         android:background="@drawable/background_rounded_square"
         android:ems="10"
         android:hint="@string/credit_limit"
-        android:inputType="text"
+        android:inputType="numberDecimal"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.57" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <Button
         android:id="@+id/createAcc_Btn"
@@ -99,7 +99,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.66" />
+        app:layout_constraintVertical_bias="0.7" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

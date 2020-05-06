@@ -22,7 +22,6 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public AccountRecyclerViewAdapter(Context context, ArrayList<Account> arrayList) {
         this.context = context;
         this.items = arrayList;
-
     }
 
     @NonNull
@@ -73,7 +72,6 @@ public class AccountRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView dispBalance;
         TextView dispMisc;
         ConstraintLayout parentLayout;
-
 
         public Item(View itemView) {
             super(itemView);

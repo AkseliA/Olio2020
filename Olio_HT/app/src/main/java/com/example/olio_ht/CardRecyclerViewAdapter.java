@@ -29,7 +29,6 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return new Item(row);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         //SET STUFFF

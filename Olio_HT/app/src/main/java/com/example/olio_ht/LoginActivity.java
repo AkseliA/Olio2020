@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Initialize
         signIn = findViewById(R.id.signIn_btn);
         signUp = findViewById(R.id.signUp_btn);
         email_txt = findViewById(R.id.email_txt);
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         fbAuth.addAuthStateListener(fbAuthStateListener);
     }
 
+    //Takes email and password from editText fields. Creates hashed password and tries to login using firebase signInWithEmailAndPassword method.
     public void logIn() {
         String email = email_txt.getText().toString();
         String password = password_txt.getText().toString();
@@ -91,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
             //For logging in we must generate hashedpassword from the input
             String salt = pwHash.getSalt();
             String hashedPw = pwHash.getHashedPassword(password, salt);
-
 
             fbAuth.signInWithEmailAndPassword(email, hashedPw).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
