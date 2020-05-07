@@ -1,5 +1,8 @@
 package com.example.olio_ht;
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +25,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AccountSettingsActivity extends AppCompatActivity {
@@ -76,9 +83,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         String textToDisplay = type + ": " + number;
         displayAccTxt.setText(textToDisplay);
 
-        //DATETIME
-        dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        now = LocalDateTime.now();
+
 
         //Load account info + data
         loadAccountInfo(number, type);
@@ -228,16 +233,25 @@ public class AccountSettingsActivity extends AppCompatActivity {
         if (credLimit > 0) {
             editAcc.put("limit", credLimit);
             //New transaction when limit is changed
-            String date = dtf.format(now);
             String action = "Credit limit set: " + creditLimit;
-            Transaction newTrans = new Transaction(action, date, "", "", account_number);
+            createTransaction(action, account_number);
 
-            //Write action to transactions xml
-            ioXml.writeTransaction(context, newTrans);
         }
         reference.updateChildren(editAcc);
     }
+    //Creates new transcation object and writes it to an Xml
+    public void createTransaction(String action, String account_Number) {
+        //Datetime
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.GERMANY);
+        String formattedDate = simpleDateFormat.format(cal.getTime());
 
+        context = getApplicationContext();
+        //New transaction
+        Transaction newTransaction = new Transaction(action, formattedDate, "", "", account_Number);
+        ioXml = new InputOutputXml();
+        ioXml.writeTransaction(context, newTransaction);
+    }
     public void displayTransactions() {
         ArrayList<Transaction> transArrList = new ArrayList<>();
         transArrList = ioXml.readTransactionXml(context, number);

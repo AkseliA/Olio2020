@@ -1,5 +1,8 @@
 package com.example.olio_ht;
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 public class Transaction {
     private String action;
     private String date;

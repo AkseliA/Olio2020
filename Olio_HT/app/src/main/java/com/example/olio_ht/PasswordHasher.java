@@ -1,13 +1,15 @@
 package com.example.olio_ht;
-
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 //Class to set and get SHA-512+salt hashed passwords
 public class PasswordHasher {
-    String salt;
+    private String salt;
 
     public PasswordHasher() {
         salt = "Oq+hcZo9dccnSm/hUyIaiQ6!";

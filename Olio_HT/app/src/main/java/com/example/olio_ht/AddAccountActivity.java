@@ -1,5 +1,8 @@
 package com.example.olio_ht;
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AddAccountActivity extends AppCompatActivity {
@@ -33,8 +39,6 @@ public class AddAccountActivity extends AppCompatActivity {
     FirebaseAuth fbAuth;
     DatabaseReference reference, UIDref;
     FirebaseDatabase fbDatabase;
-    DateTimeFormatter dtf;
-    LocalDateTime now;
     InputOutputXml ioXml;
     Context context;
 
@@ -54,10 +58,6 @@ public class AddAccountActivity extends AppCompatActivity {
         context = getApplicationContext();
         //Only show this textfield when creditAccount is chosen
         creditLimitTxt.setVisibility(View.INVISIBLE);
-
-        //DATETIME
-        dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        now = LocalDateTime.now();
 
 
         setAccTypeSpnr();
@@ -145,10 +145,8 @@ public class AddAccountActivity extends AppCompatActivity {
         UIDref.updateChildren(updateAcc);
 
         //Write transactions.XML
-        String date = dtf.format(now);
         String action = accTypeSpnr.getSelectedItem().toString() + " account created";
-        Transaction newTrans = new Transaction(action, date, "", Double.toString(startingBalance), accNmbr);
-        ioXml.writeTransaction(context, newTrans);
+        createTransaction(action, startingBalance, accNmbr);
 
         Toast.makeText(AddAccountActivity.this, "Account created.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(AddAccountActivity.this, HomeActivity.class);
@@ -215,5 +213,19 @@ public class AddAccountActivity extends AppCompatActivity {
             type = "savings_account";
         }
         return type;
+    }
+
+    //Creates new transaction object and writes it to an Xml
+    public void createTransaction(String action, Double newBalance, String account_Number) {
+        //Datetime
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.GERMANY);
+        String formattedDate = simpleDateFormat.format(cal.getTime());
+
+        context = getApplicationContext();
+        //New transaction
+        Transaction newTransaction = new Transaction(action, formattedDate, "", Double.toString(newBalance), account_Number);
+        ioXml = new InputOutputXml();
+        ioXml.writeTransaction(context, newTransaction);
     }
 }

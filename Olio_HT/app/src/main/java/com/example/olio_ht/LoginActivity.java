@@ -1,5 +1,8 @@
 package com.example.olio_ht;
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             email_txt.setError("Enter email address");
             email_txt.requestFocus();
 
-        } else if (password.isEmpty()) {
+        }if (password.isEmpty()) {
             password_txt.setError("Enter password");
             password_txt.requestFocus();
 
@@ -102,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 }
             });

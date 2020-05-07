@@ -1,5 +1,8 @@
 package com.example.olio_ht;
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;

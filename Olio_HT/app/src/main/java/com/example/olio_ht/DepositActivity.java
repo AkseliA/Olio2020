@@ -1,5 +1,8 @@
 package com.example.olio_ht;
-
+/* The vault - android banking application
+ *  Author: Akseli Aula 0545267
+ *  Object Oriented programming course final project
+ *  2020 */
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -19,10 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class DepositActivity extends AppCompatActivity {
@@ -182,14 +188,14 @@ public class DepositActivity extends AppCompatActivity {
 
     //Creates new transaction object and writes it to an Xml
     public void createTransaction(String action, Double amount, Double newBalance, String account_Number) {
-        //required info
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDateTime now = LocalDateTime.now();
-        String date = dtf.format(now);
+        //Datetime
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.GERMANY);
+        String formattedDate = simpleDateFormat.format(cal.getTime());
 
         context = getApplicationContext();
         //New transaction
-        newTransaction = new Transaction(action, date, Double.toString(amount), Double.toString(newBalance), account_Number);
+        newTransaction = new Transaction(action, formattedDate, Double.toString(amount), Double.toString(newBalance), account_Number);
         ioXml = new InputOutputXml();
         ioXml.writeTransaction(context, newTransaction);
     }
